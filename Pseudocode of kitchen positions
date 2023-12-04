@@ -1,0 +1,338 @@
+Параметры, которые учитываются при моделировании поведения работника:
+	* Очередь заказов 					Orders			: Queue
+	* Количество булок в тостере 				bunsInToater		: Int
+	* Количество готовых булок 				bunsReady		: Int
+	* Количество пустых булок на линии 			bunsOnLine		: Int
+	* Количество заполненных булок 				bunsFilled		: Int
+	* Количество приказов на дополнение 			addOrder		: Int
+	* Минимальное количество сырья для дополнений 		rawMinimum		: const Int
+	* Поддерживаемое количество сырья для дополнений	rawMaximum		: const Int
+	* Количество готовящегося сырья для дополнений 		rawPreparing		: Int
+	* Количество готового сырья 				rawReady		: Int
+	* Количество сырья в лотках 				rawInTray		: Int
+	* Количество принятых заказов на бургеры 		burgersOrderAccepted	: Int
+	* Количество готовых бурегров 				burgersReady		: Int
+	* Количество готовых дополнений 			addReady		: Int
+	* Количесьво готового мяса 				meatReady		: Int
+	* Количество фритюрниц 					fryersCount		: Int
+
+Признаки занятости работников
+	* Сколько людей наполняют бургеры	burgerFilling 	: Int
+	* Кто-то пакует бургеры 		burgerPacking	: Bool
+	* Кто-то пакует дополнение		addPaching	: Bool
+
+Время различных процессов:
+	* Время оценки ситуации 			Normal(assessTime)		: Time
+	* Время переноса всех булок из тостера на линию	Normal(bunsTransferTime)	: Time
+	* Время помещения булок в тостер 		Normal(bunsInLineTime)		: Time
+	* Время наполнения одного бургера 		Normal(singleBurgerFillingTime)	: Time
+	* Время наполнения двух бургеров зараз 		Normal(doubleBurgerFillingTime)	: Time
+	* Время запаковки одного бургера 		Normal(singleBurgerPackingTime)	: Time
+	* Время запаковки двух бурегров зараз 		Normal(doubleBurgerPackingTime)	: Time
+	* Время запаковки дополнения 			Normal(addPackingTime)		: Time
+	* Время отдачи приказа о запаковке дополнения 	Normal(addOrderingTime)		: Time
+	* Время перемещения готового сырья в лоток 	Normal(rawInTrayTime)		: Time
+	* Время начала готовки сырья 			Normal(rawPrepareTime)		: Time
+	* Время готовки сырья 				rawTime;			: Time
+	* Время приготовления булки 			bunTime;			: Time
+
+Операции над очередью заказов:
+	* Проверка налиция заказов				Orders.Empty()		: Bool
+	* Получение следующего заказа и удаление его из очереди	Orders.Pop()		: OrderType
+	* Добавление нового заказа				Orders.Push(order_T)	: Void
+
+
+
+
+
+Алгоритм работы единственного финишера:
+while(true) {	
+	Wait(Normal(assessTime));										// Оценить ситуацию
+	
+	if (rawReady != 0) {											// Если на фритюре есть готовое сырье
+		while (rawReady != 0) {										// И поочередно переместить все готовое сырье в лотки
+			rawReady--;
+			Wait(Normal(rayInTrayTime));
+			rawInTray++;
+		}
+	}
+	
+	if (rawInTray + rawPreparing + rawReady - addOrder < rawMinimum && rawPreparing < fryersCount) {	// Если готового сырья уже нет, но сырья слишком мало, и есть свободная фритюрница
+		while (rawInTray + rawPreparing + rawReady - addOrder != rawMaximum) {				// Ставить сырье на жарку до тех пор, пока его на станет достаточно
+			rawPreparing++;
+			Wait(Normal(rawPrepareTime));
+			(new Raw)->Activate(Time + rawTime);
+		}
+		continue;											// Начать алгоритм сначала (чтобы снова проверить готовность сырья)
+	}
+	
+	if (addPaching)												// Если кто-то другой покует дополнение
+		continue;											// Подождать пока он не закончит
+	
+	if (addOrder != 0) {											// Если есть приказ на запаковку дополнения и есть готовое сырье
+		addPaching = true;										// Занять место у запаковки дополнений
+		addOrder--;											// Запаковать одно дополнение
+		rawInTray--;
+		Wait(Normal(addPackingTime));
+		addReady++;
+		addPacking = false;										// Освободить место у запаковки дополнений
+		continue;											// Начать алгоритм сначала (чтобы заняться фритюром при надобности)
+	}
+	
+	if (burgerPacking)											// Если кто-то другой пакует бургер
+		continue;											// Подождать пока он не закончит
+	
+	if (bunsFilled != 0) {											// Если есть заполненные булки
+		burgerPacking = true;										// Занять место у запаковки бургеров
+		if (bunsFilled == 1) {										// Если есть только одна заполненная булка
+			bunsFilled--;										// Запаковать один бургер
+			meatReady--;
+			Wait(Normal(singleBurgerPackingTime));
+			burgersReady++;
+		}
+		else {												// Иначе
+			bunsFilled -= 2;									// Запаковать два бургера
+			meatRead -= 2;
+			Wait(Normal(doubleBurgerPackingTime));
+			burgersReady += 2;
+		}
+		burgerPacking = false;										// Освободить место у запаковки бургеров
+		continue;											// Начать алгоритм сначала (чтобы заняться фритюром и дополнениями при надобности)
+	}
+	
+	if (burgerFilling != 0)											// Если кто-то наполняет булку
+		continue;											// Подождать пока он не закончит
+	
+	if (bunsOnLine != 0) {											// Если есть простаивающие булки
+		burgerFilling++;										// Занять место на линии
+		if (bunsOnLine == 1) {										// Если булка всего одна
+			bunsOnLine--;										// Наполнить одну булку
+			Wait(Normal(singleBurgerFillingTime));					
+			bunsFilled++;
+		}
+		else {												// Иначе
+			bunsOnLine -= 2;									// Наполнить две булки
+			Wait(Normal(doubleBurgerFillingTime));
+			bunsFilled += 2;
+		}
+		burgerFilling--;										// Освободить место на линии
+	}
+}
+
+
+
+
+
+Алгоритм работы финишера на фритезе:
+while(true) {
+	Wait(Normal(assessTime));										// Оценить ситуацию
+	if (rawReady != 0) {											// Если на фритюре есть готовое сырье
+		while (rawReady != 0) {										// Поочередно переместить все готовое сырье в лотки
+			rawReady--;
+			Wait(Normal(rayInTrayTime));
+			rawInTray++;
+		}
+	}
+	
+	if (rawInTray + rawPreparing + rawReady - addOrder < rawMinimum && rawPreparing < fryersCount) {	// Если готового сырья уже нет, но сырья слишком мало, и есть свободная фритюрница
+		while (rawInTray + rawPreparing + rawReady - addOrder != rawMaximum) {				// Ставить сырье на жарку до тех пор, пока его на станет достаточно
+			rawPreparing++;
+			Wait(Normal(rawPrepareTime));
+			(new Raw)->Activate(Time + rawTime);
+		}
+		continue;											// Начать алгоритм сначала (чтобы снова проверить готовность сырья)
+	}
+}
+
+
+
+
+
+Алгоритм финишера упаковщика:
+while (true) {
+	Wait(Normal(assessTime));										// Оценить ситуацию
+	
+	if (addPaching)												// Если кто-то другой покует дополнение
+		continue;											// Подождать пока он не закончит
+	
+	if (addOrder != 0) {											// Если есть приказ на запаковку дополнения и есть готовое сырье
+		addPaching = true;										// Занять место у запаковки дополнений
+		addOrder--;
+		rawInTray--;
+		Wait(Normal(addPackingTime));
+		addReady++;
+		addPacking = false;										// Освободить место у запаковки дополнений
+		continue;											// Начать алгоритм сначала
+	}
+	
+	if (burgerPacking)											// Если кто-то другой пакует бургер
+		continue;											// Подождать пока он не закончит
+	
+	if (bunsFilled != 0) {											// Если есть заполненные булки
+		burgerPacking = true;										// Занять место у запаковки бургеров
+		if (bunsFilled == 1) {										// Если есть только одна заполненная булка
+			bunsFilled--;										// Запаковать один бургер
+			meatReady--;
+			Wait(Normal(singleBurgerPackingTime));
+			burgersReady++;
+		}
+		else {												// Иначе
+			bunsFilled -= 2;									// Запаковать два бургера
+			meatRead -= 2;
+			Wait(Normal(doubleBurgerPackingTime));
+			burgersReady += 2;
+		}
+		burgerPacking = false;										// Освободить место у запаковки бургеров
+		continue;											// Начать алгоритм сначала (чтобы заняться дополнениями при надобности)
+	}
+	
+	if (burgerFilling != 0)											// Если кто-то наполняет булку
+		continue;											// Подождать пока он не закончит
+	
+	if (bunsOnLine != 0) {											// Если есть простаивающие булки
+		burgerFilling++;										// Занять место на линии
+		if (bunsOnLine == 1) {										// Если булка всего одна
+			bunsOnLine--;										// Наполнить одну булку
+			Wait(Normal(singleBurgerFillingTime));					
+			bunsFilled++;
+		}
+		else {												// Иначе
+			bunsOnLine -= 2;									// Наполнить две булки
+			Wait(Normal(doubleBurgerFillingTime));
+			bunsFilled += 2;
+		}
+		burgerFilling--;										// Освободить место на линии
+	}
+}
+
+
+
+
+
+Алгоритм работы ассемблера:
+while (true) {
+	Wait(Normal(assessTime));										// Оценка ситуации
+	
+	if (!addPacking && !burgerPacking && addOrder != 0) {							// Если никто не занимается упаковкой и есть заказы на дополнение
+		addPacking = true;										// Занять место у упаковки дополнений
+		addOrder--;											// Запаковать одно дополнение
+		rawInTray--;
+		Wait(Normal(addPackingTime));
+		addReady++;
+		addPacking = false;										// Освободить место у запаковки дополнений	
+		continue;											// Начать алгоритм сначала
+	}
+	
+	if (!burgerPacking && bunsFilled != 0) {								// Если никто не занимается упаковкой бургеров и есть бургеры на запаковку
+		burgerPacking = true;										// Занять место у запаковки бургеров
+		if (bunsFilled == 1) {										// Если есть только одна заполненная булка
+			bunsFilled--;										// Запаковать один бургер
+			meatReady--;
+			Wait(Normal(singleBurgerPackingTime));
+			burgersReady++;
+		}
+		else {												// Иначе
+			bunsFilled -= 2;									// Запаковать два бургера
+			meatRead -= 2;
+			Wait(Normal(doubleBurgerPackingTime));
+			burgersReady += 2;
+		}
+		burgerPacking = false;										// Освободить место у запаковки бургеров
+		continue;											// Начать алгоритм сначала (чтобы заняться дополнениями при необходимости)
+	}
+	
+	if (bunsOnLine != 0) {
+		burgerFilling++;										// Занять место на линии
+		if (bunsOnLine == 1) {										// Если булка всего одна
+			bunsOnLine--;										// Наполнить одну булку
+			Wait(Normal(singleBurgerFillingTime));					
+			bunsFilled++;
+		}
+		else {												// Иначе
+			bunsOnLine -= 2;									// Наполнить две булки
+			Wait(Normal(doubleBurgerFillingTime));
+			bunsFilled += 2;
+		}
+		burgerFilling--;										// Освободить место на линии
+	}
+}
+
+
+
+
+
+Алгоритм работы инициатора:
+while(true) {
+	Wait(Normal(assessTime));										// Оценка ситуации
+	
+	if (bunsReady != 0) {											// Если некоторые булки уже готовы
+		int x = bunsReady;										// Перенести все готовые на данный момент булки на линию
+		bunsReady = 0;
+		Wait(Normal(bunsTransferTime));
+		bunsOnLine += x;
+		continue;											// Началь алгоритм сначала
+	}
+	
+	if (bunsInToater == 0 && !Orders.Empty()) {								// Если в тостере не готовятся никакие булки
+		while(!Orders.Empty() && burgersOrderAccepted < 2) {						// Пока не наберется два заказа на бургеры или заказы не кончатся
+			var order = Orders.Pop();								// Принимать по одному заказу
+			if (order == ADDITION) {								// Если это дополнение
+				Wait(Normal(addOrderingTime));							// Послать приказ о запаковке дополнения
+				addOrder++;
+			}
+			else											// Иначе
+				burgersOrderAccepted++;								// Принять заказ на бургер
+		}
+		if (burgersOrderAccepted != 0) {								// Если получилось принять хотя бы один заказ на бургер
+			Wait(Normal(bunsInLineTime));								// Забросить в тостер столько булок, сколько было принято заказов
+			bunsInToaster += burgersOrderAccepted;
+			for (int i = 0; i < burgersOrderAccepted; i++)
+				(new Bun)->Activate(Time + bunTime);
+			burgersOrderAccepted = 0;
+		}
+		continue;											// Начать алгоритм сначала
+	}
+	
+	if (burgerFilling == 0 !addPacking && !burgerPacking && addOrder != 0) {				// Если на всей линни нет никого кроме инициатора, но есть заказ на дополнение 
+		addPacking = true;										// Занять место у упаковки дополнений
+		addOrder--;											// Запаковать одно дополнение
+		rawInTray--;
+		Wait(Normal(addPackingTime));
+		addReady++;
+		addPacking = false;										// Освободить место у запаковки дополнений	
+		continue;											// Начать алгоритм сначала
+	}
+	
+	if (burgerFilling == 0 !addPacking && !burgerPacking && bunsFilled != 0) {				// Если на всей линни нет никого кроме инициатора, но есть готовый к запаковке бургер
+		burgerPacking = true;										// Занять место у запаковки бургеров
+		if (bunsFilled == 1) {										// Если есть только одна заполненная булка
+			bunsFilled--;										// Запаковать один бургер
+			meatReady--;
+			Wait(Normal(singleBurgerPackingTime));
+			burgersReady++;
+		}
+		else {												// Иначе
+			bunsFilled -= 2;									// Запаковать два бургера
+			meatRead -= 2;
+			Wait(Normal(doubleBurgerPackingTime));
+			burgersReady += 2;
+		}
+		burgerPacking = false;										// Освободить место у запаковки бургеров
+		continue;											// Начать алгоритм сначала (чтобы заняться дополнениями при необходимости)
+	}
+	
+	if (bunsOnLine != 0) {											// Если на линии есть булки, которыми никто не занимается
+		burgerFilling++;										// Занять место на линии
+		if (bunsOnLine == 1) {										// Если булка всего одна
+			bunsOnLine--;										// Наполнить одну булку
+			Wait(Normal(singleBurgerFillingTime));					
+			bunsFilled++;
+		}
+		else {												// Иначе
+			bunsOnLine -= 2;									// Наполнить две булки
+			Wait(Normal(doubleBurgerFillingTime));
+			bunsFilled += 2;
+		}
+		burgerFilling--;										// Освободить место на линии
+	}
+}
