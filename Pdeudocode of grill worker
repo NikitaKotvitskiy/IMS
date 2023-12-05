@@ -1,0 +1,30 @@
+Параметры, которые учитываются при моделировании поведения работника:
+	* Минимальное количество мяса			minMeat		: const Int
+	* Количество мяса, находящегося в готовке	preparingMeat	: Int
+	* Количество заказов на мясо			neededMeat	: Int
+	* Количество готового мяса в слотах		meatReady	: Int
+	* Количество готовго мяса на гриле		meatOnGrill	: Int
+	* Количество плотен гриля			grillPlots	: const Int
+
+Время различных процессов:
+	* Время оценки ситуации 			Normal(assessTime)		: Time
+	* Время начала жарки одной порции 		Normal(meatPreparingStartTime)	: Time
+	* Время приготовления мяса			meatTime			: Time
+	* Время перемещения готового мяса в слот	Normal(meatTransferTime) 	: Time
+
+Алгоритм работника гриля:
+while(true) {
+	Wait(Normal(assessTime));			// Оценка ситуации
+	
+	while(meatOnGrill != 0) {			// Пока на гриле присутствует готовое мясо
+		meatOnGrill--;				// Переносить готовое мясо в слоты
+		Wait(Normal(meatTransferTime));
+		meatReady += 6;
+	}
+	
+	if (meatReady + preparingMeat * 6 - neededMeat < minMeat && preapatingMeat < grillPlots) {	// Если мяса (учитывая готовящееся и требуемое) меньше минимального и есть свободный гриль
+		Wait(Normal(meatPreparingStartTime));							// Поставить жариться еще одну порцию
+		preparingMeat++;
+	}
+	
+}
