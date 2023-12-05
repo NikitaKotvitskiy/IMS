@@ -1,0 +1,179 @@
+Параметры, которые учитываются при моделировании поведения клиента:
+	* Длины очередей у касс		checkoutsQueue	: Int[]
+	* Длины очередей у киосков	kiosksQueue	: Int[]
+	* Количество касс		checkoutsCount	: const Int
+	* Количество киосков		kiosksCount	: const Int
+	* Список касс			checkouts	: Facility * []
+	* Список киосков		kiosks		: Facility * []
+
+Время различных процессов:
+	* Время выбора между кассой и киоском	Normal(whereToOrderTime)	: Time
+	* Время выбора киоска			Normal(whichKiosk)		: Time
+	* Время выбора кассы			Normal(whichCheckout)		: Time
+	* Время выбора продукта на киоске 	Normal(whatKiosk)		: Time
+	* Время выбора продукта на кассе	Normal(whatCheckout)		: Time
+	* Время оплаты заказа			Normal(payTime)			: Time
+
+Вероятностные параметры:
+	* Вероятность выбора киоска					kioskChance		: float
+	* Вероятность заказа первого бургера				orderBurgerFirst	: float
+	* Веростность пропуска бургеров и перехода к дополнениям	orderAdditionFirst	: float
+	* Вероятность пропуска бургеров и перехода к картошке		orderFriesFirst		: float
+	* Вероятность пропуска бурегров и перехода к напиткам 		orderDrinkFirst 	: float
+	* Вероятность отмеры заказа					cancelOrder		: float
+	* Веростность заказа еще одного бургера 			orderAnotherBurger	: float
+	* Вероятность перехода с бургеров к дополнениям	 		orderAdditionSecond	: float
+	* Вероятность пропуска дополнений и перехода к картошке		orderFriesSecond	: float
+	* Вероятность пропуска дополнений и перехода к напиткам		orderDeinkSecons	: float
+	* Вероятность окончания на бургерах				finishAtBurgers		: float
+	* Вероятность заказа еще одного дополнения			orderAnotherAddition	: float
+	* Вероятность перехода с дополнений к картошке			orderFriesThird		: float
+	* Вероятность пропуска каротшки и перехода к напиткам		orderDrinkThird 	: float
+	* Вероятность окончания на дополнениях				finishAtAdditions	: float
+	* Вероятноть заказа еще одной картошки				orderAnotherFries	: float
+	* Вероятность перехода с картошки к напиткам			orderDrinkLast		: float
+	* Вероятность окончания на картошке				finishAtFries		: float
+	* Вероятность заказа еще одного напитка 			orderAnotherDrink 	: float
+	* Вероятность окончания заказа					finishOrder		: float
+	* Вероятность неуспешной оплаты					payFailed		: float
+	* Вероятность желания поесть в заведении			eatInMCD		: float
+	
+Алгоритм поведения клиента:
+
+int burgers = 0;
+int additions = 0;
+int fries = 0;
+int drinks = 0;
+int dissatisfaction = 0
+
+enum orderState {
+	ORDER_START,
+	ORDER_BURGERS,
+	ORDER_ADDITIONS,
+	ORDER_FRIES,
+	ORDER_DRINKS
+	ORDER_END
+};
+
+orderState state = ORDER_START;
+
+Facility * chooseFacility(bool checkout) {
+	Wait(checkout ? Normal(whichCheckout) : Normal(whichKiosk));
+	int min = 0;
+	int * counts = checkout ? checkoutQueue : kiosksQueue;
+	for (int i = 1; i < checkout ? checkoutsCount : kiosksCount)
+		if (counts[i] < counts[min])
+			min = i;
+	return checkout ? checkouts[min] : kiosks[min];
+}
+
+void makeAnOrder(bool checkout) {
+	while(state != ORDER_END) {
+		Wait(checkout ? Normal(whatCheckout) : Normal(whatKiosk));
+		switch(state) {
+			case ORDER_START:
+				if (Random() < orderBurgerFirst) {
+					burgers++;
+					state = ORDER_BURGERS;
+				}
+				else if (Random() < orderBurgerFirst + orderAdditionFirst) {
+					additions++;
+					state = ORDER_ADDITIONS;
+				}
+				else if (Random() < orderBurgerFirst + orderAdditionFirst + orderFriesFirst) {
+					fries++;
+					state = ORDER_FRIES;
+				}
+				else if (Random() < orderBurgerFirst + orderAdditionFirst + orderFriesFirst + orderDrinkFirst) {
+					drinks++;
+					state = ORDER_DRINKS;
+				}
+				else
+					state = ORDER_END;
+				break;
+			case ORDER_BURGERS:
+				if (Random() < orderAnotherBurger)
+					burgers++;
+				else if (Random() < orderAnotherBurger + orderAdditionSecond) {
+					additions++;
+					state = ORDER_ADDITIONS;
+				}
+				else if (Random() < orderAnotherBurger + orderAdditionSecond + orderFriesSecond) {
+					fries++;
+					state = ORDER_FRIES;
+				}
+				else if (Random() < orderAnotherBurger + orderAdditionSecond + orderFriesSecond + orderDrinkSecond) {
+					drinks++;
+					state = ORDER_DRINKS;
+				}
+				else
+					state = ORDER_END;
+				break;
+			case ORDER_ADDITIONS:
+				if (Random() < orderAnotherAddition)
+					additions++;
+				else if (Random() < orderAnotherAddition + orderFriesThird) {
+					fries++;
+					state = ORDER_FRIES;
+				}
+				else if (Random() < orderAnotherAddition + orderFriesThird + orderDrinkThird) {
+					drink++;
+					state = ORDER_DRINKS;
+				}
+				else
+					state = ORDER_END;
+				break;
+			case ORDER_FRIES:
+				if (Random() < orderAnotherFries)
+					fries++;
+				else if (chance < orderAnotherFries + orderDrinkLast) {
+					drinks++;
+					state = ORDER_DRINKS;
+				}
+				else
+					state = ORDER_END;
+				break;
+			case ORDER_DRINKS:
+				if (Random() < orderAnotherDrink)
+					drinks++;
+				else
+					state = ORDER_END;
+		}
+	}
+}
+
+void Behavior() {
+	Wait(Normal(whereToOrderTime));					// Клиент делает выбор, где ему сделать заказ
+	if (Random() < kioskChance) {					// Если клиент решает сделать заказ в киоске
+		Facility * fac = chooseFacility(false);			// Он выберет киоск с наименьшей очередью
+		double startWaitTime = Time;
+		Seize(*Fac);						// Он встанет в очередь к киоску и будет ждать
+		dissatisfaction += int(Time - startWaitTime);		// При этом каждая минута ожидания будет повышать его недовольство
+		makeAnOrder(false);					// Дождавшись, клиент сделает заказ
+	}
+	else {								// Если же клиент решит сделать заказ на кассе
+		Facility * fac = chooseFacility(true);			// Он выберет кассу с наименьшей очередью
+		double startWaitTime = Time;
+		Seize(*Fac);						// Он встанет в очередь к кассе и будет ждать
+		dissatisfaction += int(Time - startWaitTime);		// При этом каждая минута его ожидания будет повышать его недовольство
+		makeAnOrder(true);					// Дождавшись, он сделает заказ
+	}
+	
+	if (burgers + additions + fries + drinks != 0) {		// Если в его заказе присутствует хоть один продукт
+		Wait(Normal(payTime))					// Клиент попробует заплатить
+		if (Random() >= payFailed) {				// И если оплата пройдет
+			Order *o = new Order;				// Будет создат заказ
+			order->burgers = burgers;
+			order->additions = additions;
+			order->fries = fries;
+			order->drinks = drinks;
+			if (Random() < eatInMCD)			// В заказе регистрируется желание клиента поесть на месте или забрать заказ с собой
+				order->pack = false;
+			order->Activate(Time);
+		}
+	}								
+	else								// Если же клиент по итогу ничего не заказал
+		return;							// Он просто уйдет
+}
+
+
