@@ -1,0 +1,43 @@
+Параметры, которые учитываются при моделировании поведения работника на картошке:
+	* Количество заказов на картошку		friesOrdersCount	: Int
+	* Количество запакованных порций картошки	friesPacked		: Int
+	* Количество готовых порций картошки		friesReady		: Int
+	* Минимальное количество порций			minimalFres		: const Int
+	* Количество слотов фритюра			fritSlotsCount		: const Int
+	* Количество порций в одном слоте фритюра	portionsInSlot		: const Int
+	* Количество слотов, находящихся в готовке	friesPreparing		: Int
+	* Количество только что приготовленных порций	friesFinished		: Int
+
+Время различных процессов:
+	* Время оценки ситуации				Normal(assessTime)	: Time
+	* Время запаковки одной порции			Normal(friesPackingTime)	: Time
+	* Время переноса приготовленной порции в лоток	Normal(friesTransferTime)	: Time
+	* Время приготовления картошки			friesPreparing			: Time
+	* Время приготовлений к жарке			Normal(friesFryingPrepareTime)	: Time
+
+Алгоритм работника на картошке фри:
+void Behaviour() {
+	while (true) {
+		Wait(Normal(assessTime));													// Оценка ситуации
+		
+		if (fiesFinished != 0) {													// Если какая-то картошка готова
+			friesFinished--;													// Перенести ее в специальный слот
+			Wait(Normal(friesTransferTime));
+			friesReady += portionsInSlot;
+			continue;														// Начать алгоритм сначала
+		}
+		
+		if (friesReady - friesOrdersCount + friesPreparing * portionsInSlot < minimalFries && friesPreparing < fritSlotsCount) {	// Если картошки становится недостаточно
+			Wait(Normal(friesFryingPrepareTime));											// Поставить жариться один слот
+			friesPreparing++;
+			continue;														// Начать алгоритм сначала									
+		}
+		
+		if (friesOrdersCount != 0) {													// Если есть заказы на картошку
+			friesOrdersCount--;													// Запаковать одну порцию картошки
+			friesReady--;
+			Wait(Normal(friesPackingTime));
+			friesPacked++;
+		}
+	}
+}
