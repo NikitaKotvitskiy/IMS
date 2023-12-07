@@ -1,10 +1,20 @@
 Параметры, которые учитываются при моделировании поведения клиента:
-	* Длины очередей у касс		checkoutsQueue	: Int[]
-	* Длины очередей у киосков	kiosksQueue	: Int[]
-	* Количество касс		checkoutsCount	: const Int
-	* Количество киосков		kiosksCount	: const Int
-	* Список касс			checkouts	: Facility * []
-	* Список киосков		kiosks		: Facility * []
+	* Длины очередей у касс			checkoutsQueue	: Int[]
+	* Длины очередей у киосков		kiosksQueue	: Int[]
+	* Количество касс			checkoutsCount	: const Int
+	* Количество киосков			kiosksCount	: const Int
+	* Список касс				checkouts	: Facility * []
+	* Список киосков			kiosks		: Facility * []
+	* Список мест				tables		: Table * []
+	* Недовольство грязным столом		dirtyTableDis	: Int
+	* Недовольство отсутствием места	noTableDis	: Int	
+	* Стойка выдачи заказа			extradition 	: Facility
+
+Определение структуры места:
+struct Table {
+	bool busy;
+	bool dirty;
+}
 
 Время различных процессов:
 	* Время выбора между кассой и киоском	Normal(whereToOrderTime)	: Time
@@ -13,6 +23,9 @@
 	* Время выбора продукта на киоске 	Normal(whatKiosk)		: Time
 	* Время выбора продукта на кассе	Normal(whatCheckout)		: Time
 	* Время оплаты заказа			Normal(payTime)			: Time
+	* Время получения заказа		Normal(pickOrderTime)		: Time
+	* Время осмотра места			Normal(searchTableTime)		: Time
+	* Время поедания одного продукта	Normal(eatOneItemTime)		: Time
 
 Вероятностные параметры:
 	* Вероятность выбора киоска					kioskChance		: float
@@ -37,6 +50,10 @@
 	* Вероятность окончания заказа					finishOrder		: float
 	* Вероятность неуспешной оплаты					payFailed		: float
 	* Вероятность желания поесть в заведении			eatInMCD		: float
+	* Вероятность того, что место не понравится клиенту		denyTable		: float
+	* Вероятность того, что трапеза будет закончена раньше		cancelMeal		: float
+	* Вероятность того, что клиент попросит забрать остаток		packRemains		: float
+	* Вероятность того, что клиент не уберет за собой		badClient		: float
 	
 Алгоритм поведения клиента:
 
@@ -45,6 +62,10 @@ int additions = 0;
 int fries = 0;
 int drinks = 0;
 int dissatisfaction = 0
+bool packOrder;
+bool tableFound;
+Order * order;
+Table * choosenTable;
 
 enum orderState {
 	ORDER_START,
@@ -143,37 +164,101 @@ void makeAnOrder(bool checkout) {
 }
 
 void Behavior() {
-	Wait(Normal(whereToOrderTime));					// Клиент делает выбор, где ему сделать заказ
-	if (Random() < kioskChance) {					// Если клиент решает сделать заказ в киоске
-		Facility * fac = chooseFacility(false);			// Он выберет киоск с наименьшей очередью
+	Wait(Normal(whereToOrderTime));						// Клиент делает выбор, где ему сделать заказ
+	if (Random() < kioskChance) {						// Если клиент решает сделать заказ в киоске
+		Facility * fac = chooseFacility(false);				// Он выберет киоск с наименьшей очередью
 		double startWaitTime = Time;
-		Seize(*Fac);						// Он встанет в очередь к киоску и будет ждать
-		dissatisfaction += int(Time - startWaitTime);		// При этом каждая минута ожидания будет повышать его недовольство
-		makeAnOrder(false);					// Дождавшись, клиент сделает заказ
+		Seize(*Fac);							// Он встанет в очередь к киоску и будет ждать
+		dissatisfaction += int(Time - startWaitTime);			// При этом каждая минута ожидания будет повышать его недовольство
+		makeAnOrder(false);						// Дождавшись, клиент сделает заказ
 	}
-	else {								// Если же клиент решит сделать заказ на кассе
-		Facility * fac = chooseFacility(true);			// Он выберет кассу с наименьшей очередью
+	else {									// Если же клиент решит сделать заказ на кассе
+		Facility * fac = chooseFacility(true);				// Он выберет кассу с наименьшей очередью
 		double startWaitTime = Time;
-		Seize(*Fac);						// Он встанет в очередь к кассе и будет ждать
-		dissatisfaction += int(Time - startWaitTime);		// При этом каждая минута его ожидания будет повышать его недовольство
-		makeAnOrder(true);					// Дождавшись, он сделает заказ
+		Seize(*Fac);							// Он встанет в очередь к кассе и будет ждать
+		dissatisfaction += int(Time - startWaitTime);			// При этом каждая минута его ожидания будет повышать его недовольство
+		makeAnOrder(true);						// Дождавшись, он сделает заказ
 	}
 	
-	if (burgers + additions + fries + drinks != 0) {		// Если в его заказе присутствует хоть один продукт
-		Wait(Normal(payTime))					// Клиент попробует заплатить
-		if (Random() >= payFailed) {				// И если оплата пройдет
-			Order *o = new Order;				// Будет создат заказ
+	if (burgers + additions + fries + drinks != 0) {			// Если в его заказе присутствует хоть один продукт
+		Wait(Normal(payTime))						// Клиент попробует заплатить
+		if (Random() >= payFailed) {					// И если оплата пройдет
+			order = new Order;					// Будет создан заказ
 			order->burgers = burgers;
 			order->additions = additions;
 			order->fries = fries;
 			order->drinks = drinks;
-			if (Random() < eatInMCD)			// В заказе регистрируется желание клиента поесть на месте или забрать заказ с собой
+			if (Random() < eatInMCD) {				// В заказе регистрируется желание клиента поесть на месте или забрать заказ с собой
 				order->pack = false;
-			order->Activate(Time);
+				packOrder = false;	
+			}
+			else {
+				order->pack = true;
+				packOrder = true;
+			}
+			order->client = this;					// Клиент "получает свой номер"
+			
 		}
 	}								
-	else								// Если же клиент по итогу ничего не заказал
-		return;							// Он просто уйдет
+	else									// Если же клиент по итогу ничего не заказал
+		Cancel();							// Он просто уйдет
+		
+	double startWaitTime = Time;						// После оформления заказа, клиент, получив свой номер, начинает ждать выдачи заказа
+	Passivate();								// При этом каждая минута ожидания повышает его недовольство
+	dissatisfaction += int(Time - startWaitTime);
+	
+	Wait(Normal(pickOrderTime));						// Клиент забирает готовый заказ
+	if (packOrder)								// Если он хотел забрать его с собой
+		Cancel();							// Он покидает заведение
+		
+	tableFound = false;							// В противном случае, он начинает поиск свободного места
+	startWaitTime = Time;							// При этом каждая минута поиска повышает его недовольство
+	foreach (table in tables) {						// Клиент начнет просматривать все свободные места
+		Wait(Normal(searchTableTime));	
+		if (table->busy)						// Если стол занят
+			continue;						// Клиент его отвергнет
+		if (!(table->busy) && table->dirty) {				// Если стол свободен, но грязен
+			Normal(searchTableTime)	+= dirtyTableDis;		// Недовольство клиента повысится
+			continue;						// И стол будет отвергнут
+		}
+		if (Random() < denyTable)					// Если стол не занят и чист, существует вероятность, что клиент все равно его отвергнет по тем или иным причинам
+			continue;						// Поиск продолжится
+		tableFound = true;						// Если же стол свободен, чист, и нравится клиенту, стол найден
+		choosenTable = table;
+		table->busy = true;
+		break;								// Поиск закончен
+	}
+	
+	if (!tableFound) {							// Если поиск места не увенчался успехом
+		dissatisfaction += noTableDis;					// Недовольство клиента повысится
+		startWaitTime = Time;						// Клиент попросит запаковать заказ с собой
+		Seize(extradition);						// И при этом каждая минута ожидания будет повышать его недовольство
+		dissatisfaction += int(Time - startWaitTime);
+		Cancel();							// Получив запакованный заказ, клиент покинет ресторан
+	}
+	
+	for (int i = 0; i < burgers + additions + fries + drinks; i++) {	// Клиент приступает к трапезе
+		if (Random() < cancelMeal) {					// Если клиент решил не доедать
+			choosenTable->busy = false;				// Он освобождает свой стол
+			if (Random() < packRemains) {				// При этом если он хочет забрать остатки с собой
+				startWaitTime = Time;				// Он попросит запаковать свой заказ
+				Seize(extradition);				// При этом время ожидания будет поднимать его недовольство
+				dissatisfaction += int(Time - startWaitTime);
+				Cancel()					// После получения своего запакованного заказа, клиент покинет заведение
+			}
+			if (Random() < badClient) {				// Если же клиент решает оставить еду, и он сволочь
+				choosenTable->dirty = true;			// Клиент оставит мусор на столе и тот станет грязным
+				Cancel();					// Сволочь покидает заведение
+			}
+			Cancel();						// Если же клиент приличный, он уберет за собой и покинет заведение
+		}
+		Wait(Normal(eatOneItemTime));					// Если клиент решит продолжить трапезу, то он примется за следующий продукт
+	}
+	
+	choosenTable->busy = false;						// После окончания трапезы клиент освободит стол
+	if (Random() < badClien)						// Клиент-сволочь оставит мусор на столе
+		choosenTable->dirty = true;					// И стол станет грязным
+	Cancel();								// Или клиент уберет за собой, стол останется чистым, и клиент покинет заведение
 }
 
 
