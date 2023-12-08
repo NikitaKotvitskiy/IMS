@@ -1,0 +1,104 @@
+Описание целой системы:
+Система будет обладать одним генератором прихода клиентов. Частота прихода клиентов будет зависесть от параметра частоты прихода клиентов. Клиент - это процесс.
+Все работники заведения, кроме работников на кассе, это также процессы.
+Для работы все процессы потребуют доступ к разнообразной информации. Вся эта информация будет представленная глобальными переменными, доступными всем классам.
+Клиенты будут делать заказы на кассах и 
+
+Process'ы к реализации:
+	* Client
+	* LobbyCleaner
+	* OrderCollector
+	* OrderDistriburor
+	* FriesCooker
+	* GrillCooker
+	* BeverageWorker
+	* Initiator
+	* Assembpler
+	* CompleteFinisher
+	* PackerFinisher
+	* FryerFinisher
+	* Order
+
+Дополнительные Process'ы к реализации:
+	* RawInProcess
+	* MeatInProcess
+	* DrinkInProcess
+	* FriesInProcess
+
+Event'ы к реализации:
+	* ClientGenerator
+
+Facility к реализации
+	* CashRegisters[]
+	* Kiosks[]
+
+Queue к реализации
+	* PackRequest
+	* AdditionsAccepted
+
+Дополнительные классы:
+	* Table
+	* QueueObj
+
+Дополнительная структура:
+	* NormalParametrs
+	* KitchenOrder
+
+Информация о состоянии заведения:
+	// Lobby objects and variables
+	Facility cashRegisters[];
+	int cashRegisterCount;
+	Facility kiosks[];
+	int kioskCount;
+	Table tables[];
+	int tableCount;
+	int dirtyTableInf;
+	int noTableInf;
+	
+	// Fries information
+	int friesOrderCount = 0;
+	int friesPacked = 0;
+	int friesReady = 0;
+	int friesFryerCount;
+	int portionsInSlot;
+	int friesPreparing = 0;
+	int friesFinished = 0;
+	
+	// Grill information
+	int minMeat;
+	int meatPreparing;
+	int neededMeat = 0;
+	int meatReady = 0;
+	int meatFinished = 0;
+	int grillPlotsCount;
+	int meatsOnPlot;
+	
+	// Kitchen information
+	QueueObj kitchenOrders;
+	int bunsInToater = 0;
+	int bunsReady = 0;
+	int bunsInLine = 0;
+	inr bunsFilled = 0;
+	int addOrders = 0;
+	int rawMinimum = 0;
+	int rawFinished = 0;
+	int rawReady = 0;
+	int burgersPacked = 0;
+	int additionsPacked = 0;
+	int rawFryerCount;
+	int burgerFillers = 0;
+	bool burgerIsPacking = false;
+	bool addIsPacking = false;
+	
+	// Beverage information
+	int drinkOrderCount = 0;
+	int drinkDistributorCount
+	int drinksInProcess = 0
+	int drinksReady = 0
+	int drinksPacked = 0;
+	
+	// Service information
+	Queue orders;
+	Queue readyOrders;
+	Queue packRequests;
+	bool isExtradition;
