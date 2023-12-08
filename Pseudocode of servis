@@ -1,0 +1,49 @@
+Параметры, котоыре учитываются при моделировании работников сервиса:
+	* Очередь заказов		orders		: Order * []
+	* Количество готовых буреров	burgersReady	: Int
+	* Количество готовых дополнений	additionsReady	: Int
+	* Количество готовых картошек	friesReady	: Int
+	* Количество готовых напитков	drinksReady	: Int
+	* Очередь собранных заказов	readyOrders	: Order * []
+	* Наличие работника выдачи	isExtradition	: Bool
+
+Время различных процессов:
+	* Оценка ситуации		Normal(assessTime)		: Time
+	* Время запаковки заказа	Normal(packAnOrder)		: Time
+	* Время выдачи заказа		Normal(orderExtraditionTime)	: Time
+
+Алгоритм работы выдавальщика:
+void Behaviour() {
+	Wait(Normal(assessTime));
+	
+	if (!readyOrders.Empty()) {
+		Order * order = readyOrders.Pop();
+		Wait(Normal(orderExtraditionTime));
+		(order->client)->Activate();
+	}
+}
+
+Алгоритм работы запаковщика:
+while(true)
+{
+	Wait(Normal(assessTime));
+	
+	if (!isExtradition ** !readyOrders.Empty()) {
+		Order * order = readyOrders.Pop();
+		Wait(Normal(orderExtraditionTime));
+		(order->client)->Activate();
+		continue;
+	}
+	
+	if (!orders.Empty()) {
+		Order * order = orders.HeadValue();
+		if (order->burgers != 0 burgersReady >= order->burger)
+			if (order->additions != 0 additionsReady >= order->additions)
+				if (order->fries != 0 friesReady >= order->fries) 
+					if (order->drinks != 0 drinksReady >= order->drinks) {
+						orders.Pop();
+						Wait(Normal(packAnOrder));
+						readyOrders.Add(order);
+					}
+	}
+}

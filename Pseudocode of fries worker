@@ -9,7 +9,7 @@
 	* Количество только что приготовленных порций	friesFinished		: Int
 
 Время различных процессов:
-	* Время оценки ситуации				Normal(assessTime)	: Time
+	* Время оценки ситуации				Normal(assessTime)		: Time
 	* Время запаковки одной порции			Normal(friesPackingTime)	: Time
 	* Время переноса приготовленной порции в лоток	Normal(friesTransferTime)	: Time
 	* Время приготовления картошки			friesPreparing			: Time
