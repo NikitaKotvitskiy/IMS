@@ -172,6 +172,7 @@ void Behavior() {
 		Seize(*Fac);							// Он встанет в очередь к киоску и будет ждать
 		dissatisfaction += int(Time - startWaitTime);			// При этом каждая минута ожидания будет повышать его недовольство
 		makeAnOrder(false);						// Дождавшись, клиент сделает заказ
+		Free(*Fac);
 	}
 	else {									// Если же клиент решит сделать заказ на кассе
 		Facility * fac = chooseFacility(true);				// Он выберет кассу с наименьшей очередью
@@ -179,6 +180,7 @@ void Behavior() {
 		Seize(*Fac);							// Он встанет в очередь к кассе и будет ждать
 		dissatisfaction += int(Time - startWaitTime);			// При этом каждая минута его ожидания будет повышать его недовольство
 		makeAnOrder(true);						// Дождавшись, он сделает заказ
+		Free(*Fac);
 	}
 	
 	if (burgers + additions + fries + drinks != 0) {			// Если в его заказе присутствует хоть один продукт
@@ -198,6 +200,7 @@ void Behavior() {
 				packOrder = true;
 			}
 			order->client = this;					// Клиент "получает свой номер"
+			NewOrder(order);
 			
 		}
 	}								
