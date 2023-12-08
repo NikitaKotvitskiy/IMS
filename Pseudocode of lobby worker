@@ -1,0 +1,26 @@
+Параметры, которые учитываются при моделировании поведения работника лобби:
+	* Список мест	tables	: Table * []
+
+Определение структуры места:
+struct Table {
+	bool busy = false;
+	bool dirty = false;
+	bool inService = false;
+}
+
+Время различныйх процессов:
+	* Время оценки ситуации		Normal(assessTime)		: Time
+	* Время чистки одного стола	Normal(tableCleaningTime)	: Time
+
+Алгоритм поведения работника лобби:
+void Behaviour() {
+	Wait(Normal(assessTime));
+	
+	foreach (table in tables)
+		if (table->dirty && !(table->inService)) {
+			table->inService = true;
+			Wait(Normal(tableCleaningTime));
+			table->inService = false;
+			table->dirty = false;
+		}
+}

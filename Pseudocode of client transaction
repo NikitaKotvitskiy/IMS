@@ -12,8 +12,9 @@
 
 Определение структуры места:
 struct Table {
-	bool busy;
-	bool dirty;
+	bool busy = false;
+	bool dirty = false;
+	bool inService = false;
 }
 
 Время различных процессов:
