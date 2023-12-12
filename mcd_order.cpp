@@ -15,6 +15,7 @@ Order::Order(int b, int a, int f, int d, bool p, Client * c) {
 
 void Order::Behavior() {
     friesOrderCount += fries;
+    drinksOrderCount += drinks;
     orderQueue.push(this);
     Passivate();
 }

@@ -10,6 +10,7 @@
 #include "mcd_lobby_worker.h"
 #include "mcd_service_worker.h"
 #include "mcd_frier.h"
+#include "mcd_beverage.h"
 
 using namespace std;
 
@@ -36,6 +37,10 @@ extern int friesOrderCount;
 extern int friesReady;
 extern int friesPreparing;
 extern int friesFinished;
+
+extern int drinksOrderCount;
+extern int drinksFinished;
+extern int drinksPreparing;
 
 extern queue<Order *> orderQueue;
 extern queue<Order *> packedOrderQueue;

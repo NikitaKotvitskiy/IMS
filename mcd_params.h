@@ -18,6 +18,7 @@ const int noTableInf = 5;
 // Workers params
 const int lobbyWorkerCount = 1;
 const int serviceWorkerCount = 1;
+const int beverageWorkerCount = 1;
 
 //
 // Client parameters
@@ -59,6 +60,8 @@ const double payFailed = 0.05;
 const double eatInMCD = 0.5;
 const double denyTable = 0.1;
 const double cancelMeal = 0.05;
+
+
 const double packRemains = 0.8;
 const double badClient = 0.5;
 
@@ -84,5 +87,12 @@ const NormalParams friesPackingTime = {.center = 0.1, .scattering = 0.01};
 const NormalParams friesTransferTime = {.center = 0.1, .scattering = 0.01};
 const NormalParams friesFryingPrepareTime = {.center = 0.2, .scattering = 0.02};
 const double friesPreparingTime = 2.2;
+
+// Beverage parameters
+const int drinkDistributorCount = 5;
+
+const NormalParams drinkPreparingTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams drinkPackingTime = {.center = 0.2, .scattering = 0.02};
+const double drinkFillingTime = 0.2;
 
 #endif

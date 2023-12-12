@@ -15,12 +15,16 @@ Table tables[tableCount];
 int friesPacked = 0;
 int burgersPacked = 10000;
 int additionsPacked = 10000;
-int drinksPacked = 10000;
+int drinksPacked = 0;
 
 int friesOrderCount = 0;
 int friesReady = 0;
 int friesPreparing = 0;
 int friesFinished = 0;
+
+int drinksOrderCount = 0;
+int drinksFinished = 0;
+int drinksPreparing = 0;
 
 queue<Order *> orderQueue;
 queue<Order *> packedOrderQueue;
@@ -59,6 +63,9 @@ void initMCD() {
     }
 
     (new Frier)->Activate(Time);
+
+    for (int i = 0; i < beverageWorkerCount; i++)
+        (new BeverageWorker)->Activate(Time);
 }
 
 void ClientGenerator::Behavior() {
