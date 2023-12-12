@@ -1,0 +1,347 @@
+0: client 0 has entered the MCD
+0.09148: Frier is preparing fries...
+0.224543: client 0 has decided to order in cash register
+0.336848: client 0 has chosen cash register 0
+0.336848: client 0 was in queue for 0
+0.349669: Frier is preparing fries...
+2.5168: Frier is transfering fries...
+2.86499: Frier is transfering fries...
+3.45469: client 0 has made an oder:
+	1 burgers
+	1 additions
+	0 fries
+	0 drinks
+3.53861: client 0 has paid for his order
+3.53861: client 0 wants to eat in MCD
+3.53861: client 0 starts to wait for his order
+3.58173: Service worker is packing the order
+5.25095: Service worker is extradition the order
+6.26957: client 0 waited for his order for 2 minutes
+6.37153: client 0 has got his order and starts to look for a table
+6.60832: client 0 is expecting table 0 and it is good!
+6.60832: client 0 eats an item 0
+8.07836: client 0 eats an item 1
+9.62966: client 0 finishes eating 
+9.62966: client 0 leaves the trash
+9.62966: client 0 leaves
+9.70569: lobby worker started cleaning table 0
+9.94095: lobby worker finished cleaning table 0
+11.4995: client 1 has entered the MCD
+11.7178: client 1 has decided to order in cash register
+11.8639: client 1 has chosen cash register 0
+11.8639: client 1 was in queue for 0
+17.2235: client 2 has entered the MCD
+17.3849: client 2 has decided to order in kiosk
+17.549: client 2 has chosen kiosk 0
+17.549: client 2 was in queue for 0
+19.7741: client 1 has made an oder:
+	1 burgers
+	1 additions
+	2 fries
+	2 drinks
+19.8776: client 1 has paid for his order
+19.8776: client 1 wants to eat in MCD
+19.8776: client 1 starts to wait for his order
+19.9275: Frier is packing fries...
+20.1041: Frier is packing fries...
+20.2368: Service worker is packing the order
+20.9354: client 2 has made an oder:
+	1 burgers
+	2 additions
+	0 fries
+	1 drinks
+21.0346: client 2 has paid for his order
+21.0346: client 2 wants to pack his order
+21.0346: client 2 starts to wait for his order
+21.7795: Service worker is extradition the order
+22.496: client 1 waited for his order for 2 minutes
+22.5764: Service worker is packing the order
+22.5976: client 1 has got his order and starts to look for a table
+22.7956: client 1 is expecting table 0 and it is good!
+22.7956: client 1 eats an item 0
+23.7162: Service worker is extradition the order
+24.3026: client 2 waited for his order for 3 minutes
+24.3445: client 1 eats an item 1
+24.408: client 2 has got his packed order and leaves
+25.7668: client 3 has entered the MCD
+25.7888: client 1 eats an item 2
+25.8659: client 3 has decided to order in kiosk
+26.0126: client 3 has chosen kiosk 0
+26.0126: client 3 was in queue for 0
+27.295: client 1 eats an item 3
+28.7782: client 1 eats an item 4
+28.9519: client 3 has made an oder:
+	2 burgers
+	2 additions
+	0 fries
+	0 drinks
+29.0487: client 3 has paid for his order
+29.0487: client 3 wants to eat in MCD
+29.0487: client 3 starts to wait for his order
+29.1032: Service worker is packing the order
+30.2696: client 1 eats an item 5
+30.627: Service worker is extradition the order
+31.6979: client 3 waited for his order for 2 minutes
+31.7602: client 1 finishes eating 
+31.7602: client 1 clean the table
+31.7602: client 1 leaves
+31.7794: client 3 has got his order and starts to look for a table
+32.0179: client 3 is expecting table 0 and it is good!
+32.0179: client 3 eats an item 0
+33.523: client 3 does not want to finish food
+33.523: client 3 wants to pack remains
+35.4941: client 4 has entered the MCD
+35.6616: client 4 has decided to order in kiosk
+35.8312: client 4 has chosen kiosk 0
+35.8312: client 4 was in queue for 0
+39.1922: client 5 has entered the MCD
+39.4027: client 5 has decided to order in kiosk
+39.5636: client 5 has chosen kiosk 0
+40.6639: client 6 has entered the MCD
+40.779: client 6 has decided to order in kiosk
+40.8809: client 6 has chosen kiosk 1
+40.8809: client 6 was in queue for 0
+41.5395: client 6 has made an oder:
+	0 burgers
+	0 additions
+	0 fries
+	0 drinks
+41.5395: client 6 has not chosen anything
+41.5395: client 6 leaves
+41.7106: client 7 has entered the MCD
+41.9645: client 7 has decided to order in cash register
+42.1176: client 7 has chosen cash register 0
+42.1176: client 7 was in queue for 0
+42.2013: client 8 has entered the MCD
+42.4168: client 8 has decided to order in kiosk
+42.6425: client 8 has chosen kiosk 1
+42.6425: client 8 was in queue for 0
+43.3394: client 9 has entered the MCD
+43.4859: client 9 has decided to order in cash register
+43.6858: client 9 has chosen cash register 0
+43.8118: client 4 has made an oder:
+	1 burgers
+	1 additions
+	1 fries
+	9 drinks
+43.9093: client 4 has paid for his order
+43.9093: client 4 wants to eat in MCD
+43.9093: client 4 starts to wait for his order
+43.9093: client 5 was in queue for 4.34579
+43.9622: Frier is packing fries...
+44.1357: Service worker is packing the order
+45.6184: client 5 has made an oder:
+	1 burgers
+	1 additions
+	0 fries
+	0 drinks
+45.6625: client 7 has made an oder:
+	1 burgers
+	1 additions
+	0 fries
+	0 drinks
+45.7073: Service worker is extradition the order
+45.7121: client 5 has paid for his order
+45.7121: client 5 wants to pack his order
+45.7121: client 5 starts to wait for his order
+45.7547: client 7 has paid for his order
+45.7547: client 7 wants to pack his order
+45.7547: client 7 starts to wait for his order
+45.7547: client 9 was in queue for 2.06887
+46.0867: client 8 has made an oder:
+	2 burgers
+	1 additions
+	1 fries
+	1 drinks
+46.1303: client 10 has entered the MCD
+46.1668: client 8 has paid for his order
+46.1668: client 8 wants to pack his order
+46.1668: client 8 starts to wait for his order
+46.1785: Frier is preparing fries...
+46.2287: client 10 has decided to order in cash register
+46.4146: client 10 has chosen cash register 0
+46.4227: Frier is packing fries...
+46.8251: client 4 waited for his order for 2 minutes
+46.9075: Service worker is packing the order
+46.9247: client 4 has got his order and starts to look for a table
+47.1023: client 4 is expecting table 0 and he does not like it
+47.2847: client 4 is expecting table 1 and it is good!
+47.2847: client 4 eats an item 0
+48.5259: Service worker is extradition the order
+48.5568: Frier is transfering fries...
+48.8146: client 4 eats an item 1
+49.2771: client 5 waited for his order for 3 minutes
+49.3624: Service worker is packing the order
+49.3722: client 5 has got his packed order and leaves
+50.3105: client 4 eats an item 2
+51.1343: Service worker is extradition the order
+51.8374: client 4 eats an item 3
+52.1657: client 7 waited for his order for 6 minutes
+52.254: Service worker is packing the order
+52.2644: client 7 has got his packed order and leaves
+52.6229: client 11 has entered the MCD
+52.806: client 11 has decided to order in kiosk
+53.0115: client 11 has chosen kiosk 0
+53.0115: client 11 was in queue for 0
+53.2917: client 4 eats an item 4
+53.6298: Service worker is extradition the order
+53.9342: client 9 has made an oder:
+	1 burgers
+	4 additions
+	2 fries
+	1 drinks
+54.0343: client 9 has paid for his order
+54.0343: client 9 wants to pack his order
+54.0343: client 9 starts to wait for his order
+54.0343: client 10 was in queue for 7.61968
+54.0542: Frier is packing fries...
+54.2583: Frier is packing fries...
+54.3232: client 8 waited for his order for 8 minutes
+54.4029: client 8 has got his packed order and leaves
+54.4116: Service worker is packing the order
+54.6657: client 11 has made an oder:
+	1 burgers
+	1 additions
+	0 fries
+	0 drinks
+54.7726: client 11 has paid for his order
+54.7726: client 11 wants to pack his order
+54.7726: client 11 starts to wait for his order
+54.8292: client 4 eats an item 5
+55.7832: client 12 has entered the MCD
+55.7908: Service worker is extradition the order
+55.955: client 12 has decided to order in kiosk
+56.0704: client 12 has chosen kiosk 0
+56.0704: client 12 was in queue for 0
+56.24: client 4 eats an item 6
+56.8804: client 9 waited for his order for 2 minutes
+56.9488: Service worker is packing the order
+56.979: client 9 has got his packed order and leaves
+57.7069: client 4 eats an item 7
+58.3637: client 10 has made an oder:
+	1 burgers
+	2 additions
+	0 fries
+	1 drinks
+58.475: client 10 has paid for his order
+58.475: client 10 wants to eat in MCD
+58.475: client 10 starts to wait for his order
+58.8253: client 12 has made an oder:
+	2 burgers
+	2 additions
+	0 fries
+	0 drinks
+58.8739: Service worker is extradition the order
+58.9241: client 12 cannot pay for his order
+58.9241: client 12 leaves
+59.2113: client 4 eats an item 8
+59.9298: client 11 waited for his order for 5 minutes
+60.004: Service worker is packing the order
+60.0327: client 11 has got his packed order and leaves
+60.7151: client 4 eats an item 9
+61.5088: Service worker is extradition the order
+62.2061: client 4 eats an item 10
+62.3038: client 10 waited for his order for 3 minutes
+62.3975: client 10 has got his order and starts to look for a table
+62.542: client 10 is expecting table 0 and it is good!
+62.542: client 10 eats an item 0
+63.7406: client 4 eats an item 11
+64.0411: client 10 eats an item 1
+65.3323: client 4 finishes eating 
+65.3323: client 4 leaves the trash
+65.3323: client 4 leaves
+65.3535: lobby worker started cleaning table 1
+65.5288: lobby worker finished cleaning table 1
+65.6044: client 10 eats an item 2
+67.1208: client 10 eats an item 3
+68.5767: client 10 finishes eating 
+68.5767: client 10 leaves the trash
+68.5767: client 10 leaves
+68.654: lobby worker started cleaning table 0
+68.8287: lobby worker finished cleaning table 0
+84.2781: client 13 has entered the MCD
+84.406: client 13 has decided to order in kiosk
+84.5064: client 13 has chosen kiosk 0
+84.5064: client 13 was in queue for 0
+85.7154: client 14 has entered the MCD
+85.8475: client 14 has decided to order in cash register
+85.9895: client 14 has chosen cash register 0
+85.9895: client 14 was in queue for 0
+88.0476: client 13 has made an oder:
+	1 burgers
+	1 additions
+	1 fries
+	1 drinks
+88.129: client 13 has paid for his order
+88.129: client 13 wants to eat in MCD
+88.129: client 13 starts to wait for his order
+88.202: Frier is packing fries...
+88.3721: Service worker is packing the order
+89.2523: client 14 has made an oder:
+	1 burgers
+	0 additions
+	0 fries
+	2 drinks
+89.3613: client 14 has paid for his order
+89.3613: client 14 wants to eat in MCD
+89.3613: client 14 starts to wait for his order
+89.9889: Service worker is extradition the order
+90.836: client 13 waited for his order for 2 minutes
+90.9333: client 13 has got his order and starts to look for a table
+90.9562: Service worker is packing the order
+90.9654: client 15 has entered the MCD
+91.0295: client 13 is expecting table 0 and it is good!
+91.0295: client 13 eats an item 0
+91.1455: client 16 has entered the MCD
+91.1969: client 15 has decided to order in kiosk
+91.3604: client 16 has decided to order in cash register
+91.4008: client 15 has chosen kiosk 0
+91.4008: client 15 was in queue for 0
+91.5456: client 16 has chosen cash register 0
+91.5456: client 16 was in queue for 0
+92.1248: Service worker is extradition the order
+92.4857: client 13 eats an item 1
+93.0583: client 14 waited for his order for 3 minutes
+93.152: client 14 has got his order and starts to look for a table
+93.3508: client 14 is expecting table 0 and it is busy
+93.5423: client 14 is expecting table 1 and it is good!
+93.5423: client 14 eats an item 0
+93.9675: client 13 eats an item 2
+94.5438: client 16 has made an oder:
+	1 burgers
+	1 additions
+	0 fries
+	0 drinks
+94.6387: client 16 has paid for his order
+94.6387: client 16 wants to eat in MCD
+94.6387: client 16 starts to wait for his order
+94.7043: Service worker is packing the order
+95.1167: client 14 eats an item 1
+95.4238: client 13 eats an item 3
+95.7279: client 15 has made an oder:
+	1 burgers
+	2 additions
+	1 fries
+	2 drinks
+95.8397: client 15 has paid for his order
+95.8397: client 15 wants to eat in MCD
+95.8397: client 15 starts to wait for his order
+95.8995: Frier is preparing fries...
+96.2102: Frier is packing fries...
+96.3195: Service worker is extradition the order
+96.5732: client 14 eats an item 2
+96.9764: client 13 finishes eating 
+96.9764: client 13 clean the table
+96.9764: client 13 leaves
+97.0542: client 16 waited for his order for 2 minutes
+97.1118: Service worker is packing the order
+97.15: client 16 has got his order and starts to look for a table
+97.2843: client 16 is expecting table 0 and it is good!
+97.2843: client 16 eats an item 0
+98.1012: client 14 finishes eating 
+98.1012: client 14 clean the table
+98.1012: client 14 leaves
+98.3255: Frier is transfering fries...
+98.7612: client 16 eats an item 1
+98.7612: Service worker is extradition the order
+14
