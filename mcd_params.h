@@ -19,6 +19,7 @@ const int noTableInf = 5;
 const int lobbyWorkerCount = 1;
 const int serviceWorkerCount = 1;
 const int beverageWorkerCount = 1;
+const int kitchenWorkerCount = 3;
 
 //
 // Client parameters
@@ -94,5 +95,28 @@ const int drinkDistributorCount = 5;
 const NormalParams drinkPreparingTime = {.center = 0.2, .scattering = 0.02};
 const NormalParams drinkPackingTime = {.center = 0.2, .scattering = 0.02};
 const double drinkFillingTime = 0.2;
+
+// Kitchen paraneters
+const int rawMinimum = 5;
+const int rawFryerCount = 6;
+const int grillPlots = 4;
+const int meatMinimum = 12;
+const int meatOnOnePlot = 6;
+
+const NormalParams bunsTransferTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams bunsToToasterTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams singleBurgerFillingTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams doubleBurgerFillingTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams singleBurgerPackingTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams doubleBurgerPackingTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams addPackingTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams addOrderingTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams rawToTrayTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams rawToFryerTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams meatPreparingStartTime = {.center = 0.2, .scattering = 0.02};
+const NormalParams meatTransferTime = {.center = 0.2, .scattering = 0.02};
+const double meatTime = 1;
+const double rawTime = 2.5;
+const double bunTime = 0.36;
 
 #endif

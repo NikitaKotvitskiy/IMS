@@ -11,6 +11,7 @@
 #include "mcd_service_worker.h"
 #include "mcd_frier.h"
 #include "mcd_beverage.h"
+#include "mcd_kitchen.h"
 
 using namespace std;
 
@@ -44,6 +45,8 @@ extern int drinksPreparing;
 
 extern queue<Order *> orderQueue;
 extern queue<Order *> packedOrderQueue;
+extern queue<bool> kitchenOrderQueue;
+extern int neededMeat;
 
 extern bool isExtraditor;
 

@@ -13,8 +13,8 @@ Queue extradition;
 Table tables[tableCount];
 
 int friesPacked = 0;
-int burgersPacked = 10000;
-int additionsPacked = 10000;
+int burgersPacked = 0;
+int additionsPacked = 0;
 int drinksPacked = 0;
 
 int friesOrderCount = 0;
@@ -28,6 +28,8 @@ int drinksPreparing = 0;
 
 queue<Order *> orderQueue;
 queue<Order *> packedOrderQueue;
+queue<bool> kitchenOrderQueue;
+int neededMeat = 0;
 
 bool isExtraditor;
 
@@ -66,6 +68,26 @@ void initMCD() {
 
     for (int i = 0; i < beverageWorkerCount; i++)
         (new BeverageWorker)->Activate(Time);
+    
+    switch (kitchenWorkerCount) {
+        case 2:
+            (new SingleFinisher)->Activate(Time);
+            (new Iniciator)->Activate(Time);
+            break;
+        case 3:
+            (new SingleFinisher)->Activate(Time);
+            (new Assambler)->Activate(Time);
+            (new Iniciator)->Activate(Time);
+            break;
+        case 4:
+            (new FinisherFryer)->Activate(Time);
+            (new FinisherPacker)->Activate(Time);
+            (new Assambler)->Activate(Time);
+            (new Iniciator)->Activate(Time);
+            break;
+    }
+
+    (new Griller)->Activate(Time);
 }
 
 void ClientGenerator::Behavior() {
