@@ -253,7 +253,10 @@ void Griller::Behavior() {
             Wait(Normal(meatPreparingStartTime.center, meatPreparingStartTime.scattering));
             cout << Time << ": meat is preparing" << endl;
             neededMeat -= meatOnOnePlot;
+            if (neededMeat < 0)
+                neededMeat = 0;
             preparingMeat++;
+            (new Meat)->Activate(Time);
         }
     }
 }

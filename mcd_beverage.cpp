@@ -7,7 +7,6 @@ void BeverageWorker::Behavior() {
         Wait(Normal(assessTime.center, assessTime.scattering));
 
         if (drinksFinished != 0) {
-            cout << Time << ": beverage worker is packing drink" << endl;
             drinksFinished--;
             Wait(Normal(drinkPackingTime.center, drinkPackingTime.scattering));
             drinksPacked++;
@@ -15,7 +14,6 @@ void BeverageWorker::Behavior() {
         }
 
         if (drinksOrderCount != 0 && drinkDistributorCount > drinksPreparing) {
-            cout << Time << ": beverage worker is preparing drink" << endl;
             drinksOrderCount--;
             Wait(Normal(drinkPreparingTime.center, drinkPreparingTime.scattering));
             (new Drink)->Activate();

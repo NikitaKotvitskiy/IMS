@@ -99,17 +99,9 @@ void Client::Behavior() {
     if (Random() < kioskChance)
             orderInCashRegister = false;
 
-    cout << Time << ": client " << clientNumber << " has decided to order in " << (orderInCashRegister ? "cash register" : "kiosk") << endl;
-
     int idx = chooseFacility();
-
-    cout << Time << ": client " << clientNumber << " has chosen " << (orderInCashRegister ? "cash register " : "kiosk ") << idx << endl;
-
     startWaitTime = Time;
     Seize(orderInCashRegister ? cashRegisters[idx] : kiosks[idx]);
-
-    cout << Time << ": client " << clientNumber << " was in queue for " << Time - startWaitTime << endl;
-
     dissatisfaction += int(Time - startWaitTime);
     makeAnOrder();
 
@@ -123,60 +115,47 @@ void Client::Behavior() {
         Wait(Normal(payTime.center, payTime.scattering));
         Release(orderInCashRegister ? cashRegisters[idx] : kiosks[idx]);
         if (Random() < payFailed) {
-            cout << Time << ": client " << clientNumber << " cannot pay for his order" << endl;
-            cout << Time << ": client " << clientNumber << " leaves" << endl;
             clientsLeft++;
             Cancel();
         }
         else {
-            cout << Time << ": client " << clientNumber <<  " has paid for his order" << endl;
             packOrder = true;
             if (Random() < eatInMCD)
                 packOrder = false;
-            cout << Time << ": client " << clientNumber << " wants to " << (packOrder ? "pack his order" : "eat in MCD") << endl;
             order = new Order(burgers, additions, fries, drinks, packOrder, this);
             order->Activate(Time);
         }
     }
     else {
         clientsLeft++;
-        cout << Time << ": client " << clientNumber << " has not chosen anything" << endl;
-        cout << Time << ": client " << clientNumber << " leaves" << endl;
         Release(orderInCashRegister ? cashRegisters[idx] : kiosks[idx]);
         Cancel();
     }
     
-    cout << Time << ": client " << clientNumber << " starts to wait for his order" << endl;
     startWaitTime = Time;
     Passivate();
-    cout << Time << ": client " << clientNumber << " waited for his order for " << int(Time - startWaitTime) << " minutes" << endl;
     dissatisfaction += int(Time - startWaitTime);
 
     Wait(Normal(pickOrderTime.center, pickOrderTime.scattering));
     if (packOrder) {
         clientsLeft++;
-        cout << Time << ": client " << clientNumber << " has got his packed order and leaves" << endl;
         Cancel();
     }
-    cout << Time << ": client " << clientNumber << " has got his order and starts to look for a table" << endl;
+
     tableFound = false;
     startWaitTime = Time;
     for (int i = 0; i < tableCount; i++) {
         Wait(Normal(searchTableTime.center, searchTableTime.scattering));
         if (tables[i].busy) {
-            cout << Time << ": client " << clientNumber << " is expecting table " << i << " and it is busy" << endl;
             continue;
         }
         if (!tables[i].busy && tables[i].dirty) {
-            cout << Time << ": client " << clientNumber << " is expecting table " << i << " and it is dirty" << endl;
             dissatisfaction += dirtyTableInf;
             continue;
         }
         if (Random() < denyTable) {
-            cout << Time << ": client " << clientNumber << " is expecting table " << i << " and he does not like it" << endl;
             continue;
         }
-        cout << Time << ": client " << clientNumber << " is expecting table " << i << " and it is good!" << endl;
         tableFound = true;
         chosenTable = i;
         tables[i].busy = true;
@@ -184,7 +163,6 @@ void Client::Behavior() {
     }
 
     if (!tableFound) {
-        cout << Time << ": client " << clientNumber << " did not found table and now wants to pack his order" << endl;
         dissatisfaction += noTableInf;
         startWaitTime = Time;
         extradition.Insert(this);
@@ -196,40 +174,29 @@ void Client::Behavior() {
 
     for (int i = 0; i < burgers + additions + fries + drinks; i++) {
         if (Random() < cancelMeal) {
-            cout << Time << ": client " << clientNumber << " does not want to finish food" << endl;
             tables[chosenTable].busy = false;
             if (Random() < packRemains) {
-                cout << Time << ": client " << clientNumber << " wants to pack remains" << endl;
                 startWaitTime = Time;
                 extradition.Insert(this);
                 Passivate();
                 dissatisfaction += int(Time - startWaitTime);
                 clientsLeft++;
-                cout << Time << ": client " << clientNumber << " leaves" << endl;
                 Cancel();
             }
             if (Random() < badClient) {
-                cout << Time << ": client " << clientNumber << " client leaves the food on table" << endl;
                 tables[chosenTable].dirty = true;
                 clientsLeft++;
-                cout << Time << ": client " << clientNumber << " leaves" << endl;
                 Cancel();
             }
             clientsLeft++;
-            cout << Time << ": client " << clientNumber << " cleaned the table" << endl;
-            cout << Time << ": client " << clientNumber << " leaves" << endl;
             Cancel();
         }
-        cout << Time << ": client " << clientNumber << " eats an item " << i << endl;
         Wait(Normal(eatOneItemTime.center, eatOneItemTime.scattering));
     }
 
-    cout << Time << ": client " << clientNumber << " finishes eating " << endl;
     tables[chosenTable].busy = false;
     if (Random() < badClient)
         tables[chosenTable].dirty = true;
-    
-    cout << Time << ": client " << clientNumber << (tables[chosenTable].dirty ? " leaves the trash" : " clean the table") << endl;
-    cout << Time << ": client " << clientNumber << " leaves" << endl;
+
     clientsLeft++;
 }

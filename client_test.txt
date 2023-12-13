@@ -1,201 +1,212 @@
 0: client 0 has entered the MCD
 0.09148: Frier is preparing fries...
-0.173299: client 0 has decided to order in cash register
 0.26027: meat is preparing
 0.296004: raw is starting to prepare
 0.367252: Frier is preparing fries...
-0.367666: client 0 has chosen cash register 0
-0.367666: client 0 was in queue for 0
 0.573925: raw is starting to prepare
-0.82629: raw is starting to prepare
-1.13419: raw is starting to prepare
-1.42455: raw is starting to prepare
-2.22133: client 0 has made an oder:
-	1 burgers
-	0 additions
-	0 fries
-	0 drinks
-2.30243: client 0 has paid for his order
-2.30243: client 0 wants to pack his order
-2.30243: client 0 starts to wait for his order
-2.53504: meat is preparing
-2.53743: Frier is transfering fries...
-2.55837: 1 buns are filled in toater
-2.85786: Frier is transfering fries...
-2.86389: raw is transfering to tray
-3.08082: raw is transfering to tray
-3.15019: 1 buns are being transfered to the line
-3.38121: raw is transfering to tray
-3.44039: one burger is being filled
-3.80032: one burger is being packed
-3.86236: Service worker is packing the order
-3.88273: raw is transfering to tray
-4.07317: raw is transfering to tray
-5.0905: Service worker is extradition the order
-6.09088: client 0 waited for his order for 3 minutes
-6.17174: client 0 has got his packed order and leaves
-11.4995: client 1 has entered the MCD
-11.5873: client 1 has decided to order in kiosk
-11.7697: client 1 has chosen kiosk 0
-11.7697: client 1 was in queue for 0
-13.0557: client 1 has made an oder:
-	1 burgers
-	0 additions
-	0 fries
-	0 drinks
-13.1564: client 1 has paid for his order
-13.1564: client 1 wants to pack his order
-13.1564: client 1 starts to wait for his order
-13.4203: 1 buns are filled in toater
-14.0622: 1 buns are being transfered to the line
-14.3379: one burger is being filled
-14.5823: one burger is being packed
-14.6255: Service worker is packing the order
-16.1039: Service worker is extradition the order
-17.1311: client 1 waited for his order for 3 minutes
-17.224: client 1 has got his packed order and leaves
-25.9452: client 2 has entered the MCD
-26.1312: client 2 has decided to order in cash register
-26.3271: client 2 has chosen cash register 0
-26.3271: client 2 was in queue for 0
-32.3485: client 2 has made an oder:
-	1 burgers
-	1 additions
-	1 fries
-	2 drinks
-32.4526: client 2 has paid for his order
-32.4526: client 2 wants to pack his order
-32.4526: client 2 starts to wait for his order
-32.4747: Frier is packing fries...
-32.5: beverage worker is preparing drink
-32.7167: addition is ordered
-32.759: beverage worker is preparing drink
-32.9309: 1 buns are filled in toater
-32.9603: addition is being packed
-32.9864: raw is starting to prepare
-33.0578: beverage worker is packing drink
-33.3523: beverage worker is packing drink
-33.4581: client 3 has entered the MCD
-33.5339: 1 buns are being transfered to the line
-33.6909: client 3 has decided to order in kiosk
-33.7857: one burger is being filled
-33.8912: client 3 has chosen kiosk 0
-33.8912: client 3 was in queue for 0
-33.979: one burger is being packed
-33.9898: Service worker is packing the order
-35.3024: client 3 has made an oder:
+0.595219: meat is preparing
+0.854342: raw is starting to prepare
+1.15675: client 0 has made an oder:
 	0 burgers
 	0 additions
-	1 fries
-	1 drinks
-35.4051: client 3 has paid for his order
-35.4051: client 3 wants to pack his order
-35.4051: client 3 starts to wait for his order
-35.4335: Frier is packing fries...
-35.4655: beverage worker is preparing drink
-35.4969: raw is transfering to tray
-35.7358: Service worker is extradition the order
-35.9578: beverage worker is packing drink
-36.7883: client 2 waited for his order for 4 minutes
-36.87: Service worker is packing the order
-36.8787: client 2 has got his packed order and leaves
-38.315: Service worker is extradition the order
-39.285: client 3 waited for his order for 3 minutes
-39.3308: client 4 has entered the MCD
-39.3928: client 3 has got his packed order and leaves
-39.4368: client 4 has decided to order in kiosk
-39.6521: client 4 has chosen kiosk 0
-39.6521: client 4 was in queue for 0
-42.3071: client 4 has made an oder:
+	0 fries
+	0 drinks
+1.16571: raw is starting to prepare
+1.26624: meat is transfered to tray
+1.44471: raw is starting to prepare
+1.67617: meat is transfered to tray
+2.49618: Frier is transfering fries...
+2.81168: raw is transfering to tray
+2.83245: Frier is transfering fries...
+3.07676: raw is transfering to tray
+3.35922: raw is transfering to tray
+3.74585: raw is transfering to tray
+3.97216: raw is transfering to tray
+11.4995: client 1 has entered the MCD
+16.8415: client 1 has made an oder:
 	1 burgers
 	2 additions
+	1 fries
+	0 drinks
+16.9835: Frier is packing fries...
+17.156: meat is preparing
+17.204: addition is ordered
+17.4014: addition is ordered
+17.4084: raw is starting to prepare
+17.4105: addition is being packed
+17.6477: 1 buns are filled in toater
+17.697: addition is being packed
+17.6987: raw is starting to prepare
+18.1778: meat is transfered to tray
+18.2315: 1 buns are being transfered to the line
+18.4512: one burger is being filled
+18.6823: one burger is being packed
+18.7101: Service worker is packing the order
+19.4995: client 2 has entered the MCD
+19.9894: raw is transfering to tray
+20.2391: raw is transfering to tray
+20.4244: Service worker is extradition the order
+22.5403: client 2 has made an oder:
+	2 burgers
+	1 additions
 	0 fries
 	1 drinks
-42.4077: client 4 has paid for his order
-42.4077: client 4 wants to pack his order
-42.4077: client 4 starts to wait for his order
-42.4532: beverage worker is preparing drink
-42.6295: addition is ordered
-42.8024: addition is ordered
-42.8138: addition is being packed
-42.877: beverage worker is packing drink
-42.9399: raw is starting to prepare
-43.0149: 1 buns are filled in toater
-43.0705: addition is being packed
-43.224: raw is starting to prepare
-43.6402: 1 buns are being transfered to the line
-43.8439: one burger is being filled
-44.0629: one burger is being packed
-44.1019: Service worker is packing the order
-45.3548: Service worker is extradition the order
-45.4913: raw is transfering to tray
-45.764: raw is transfering to tray
-46.5847: client 4 waited for his order for 4 minutes
-46.6992: client 4 has got his packed order and leaves
-71.2252: client 5 has entered the MCD
-71.3825: client 5 has decided to order in cash register
-71.5517: client 5 has chosen cash register 0
-71.5517: client 5 was in queue for 0
-73.1414: client 6 has entered the MCD
-73.3236: client 6 has decided to order in kiosk
-73.4596: client 6 has chosen kiosk 0
-73.4596: client 6 was in queue for 0
-73.7505: client 5 has made an oder:
+22.8287: 2 buns are filled in toater
+23.4021: 2 buns are being transfered to the line
+23.4577: client 3 has entered the MCD
+23.5874: two burgers are being filled
+23.6538: addition is ordered
+23.8488: two burgers are being packed
+24.0323: addition is being packed
+24.0526: Service worker is packing the order
+24.0881: raw is starting to prepare
+24.6623: client 3 has made an oder:
 	0 burgers
+	0 additions
+	0 fries
+	0 drinks
+25.363: client 4 has entered the MCD
+25.4058: Service worker is extradition the order
+26.6051: raw is transfering to tray
+28.2034: client 5 has entered the MCD
+28.549: client 4 has made an oder:
+	1 burgers
+	1 additions
+	0 fries
+	1 drinks
+28.9315: addition is ordered
+29.1151: 1 buns are filled in toater
+29.1474: raw is starting to prepare
+29.2403: addition is being packed
+29.7012: 1 buns are being transfered to the line
+29.8628: one burger is being filled
+30.0539: one burger is being packed
+30.1057: Service worker is packing the order
+30.1288: meat is preparing
+31.1784: meat is transfered to tray
+31.59: Service worker is extradition the order
+31.7152: raw is transfering to tray
+33.1621: client 6 has entered the MCD
+34.4127: client 7 has entered the MCD
+35.3183: client 6 has made an oder:
+	1 burgers
 	1 additions
 	0 fries
 	0 drinks
-73.854: client 5 has paid for his order
-73.854: client 5 wants to pack his order
-73.854: client 5 starts to wait for his order
-74.0985: addition is ordered
-74.3066: raw is starting to prepare
-74.3782: addition is being packed
-74.4441: Service worker is packing the order
-75.7755: Service worker is extradition the order
-76.8157: raw is transfering to tray
-76.9136: client 5 waited for his order for 3 minutes
-77.007: client 5 has got his packed order and leaves
-78.5681: client 6 has made an oder:
+35.6701: client 5 has made an oder:
 	1 burgers
 	1 additions
-	2 fries
-	5 drinks
-78.66: client 6 has paid for his order
-78.66: client 6 wants to pack his order
-78.66: client 6 starts to wait for his order
-78.6608: beverage worker is preparing drink
-78.7308: Frier is preparing fries...
-78.9052: addition is ordered
-79.0236: Frier is packing fries...
-79.0808: beverage worker is packing drink
-79.1037: raw is starting to prepare
-79.1049: addition is being packed
-79.1081: 1 buns are filled in toater
-79.1749: Frier is packing fries...
-79.7122: 1 buns are being transfered to the line
-79.9474: one burger is being filled
-80.1593: one burger is being packed
-81.2: Frier is transfering fries...
-81.667: raw is transfering to tray
-83.3117: client 7 has entered the MCD
-83.4346: client 7 has decided to order in cash register
-83.6387: client 7 has chosen cash register 0
-83.6387: client 7 was in queue for 0
-87.1225: client 7 has made an oder:
+	0 fries
+	4 drinks
+35.7156: addition is ordered
+35.9014: 1 buns are filled in toater
+35.9516: raw is starting to prepare
+35.9559: addition is being packed
+36.492: 1 buns are being transfered to the line
+36.6809: one burger is being filled
+36.7621: addition is ordered
+36.9246: one burger is being packed
+36.9383: raw is starting to prepare
+36.9528: Service worker is packing the order
+36.9555: 1 buns are filled in toater
+37.1863: addition is being packed
+37.5078: 1 buns are being transfered to the line
+37.7168: client 8 has entered the MCD
+37.7272: one burger is being filled
+37.9023: one burger is being packed
+38.2028: Service worker is extradition the order
+38.4655: raw is transfering to tray
+39.4179: client 8 has made an oder:
+	1 burgers
+	1 additions
+	0 fries
+	0 drinks
+39.4871: raw is transfering to tray
+39.7313: addition is ordered
+39.9129: client 7 has made an oder:
+	0 burgers
+	0 additions
+	1 fries
+	2 drinks
+39.9328: 1 buns are filled in toater
+39.9994: raw is starting to prepare
+40.0132: addition is being packed
+40.0658: Frier is packing fries...
+40.5405: 1 buns are being transfered to the line
+40.7097: one burger is being filled
+40.961: one burger is being packed
+42.5087: raw is transfering to tray
+47.1036: client 9 has entered the MCD
+50.3394: client 9 has made an oder:
+	2 burgers
+	0 additions
+	0 fries
+	0 drinks
+50.6647: 2 buns are filled in toater
+51.2688: 2 buns are being transfered to the line
+51.5158: two burgers are being filled
+51.6744: two burgers are being packed
+51.7373: meat is preparing
+52.8069: meat is transfered to tray
+76.3273: client 10 has entered the MCD
+80.819: client 10 has made an oder:
+	2 burgers
+	1 additions
+	0 fries
+	1 drinks
+81.1831: 2 buns are filled in toater
+81.7626: 2 buns are being transfered to the line
+81.9731: two burgers are being filled
+82.056: addition is ordered
+82.2316: two burgers are being packed
+82.4242: addition is being packed
+82.5229: raw is starting to prepare
+85.0277: raw is transfering to tray
+92.782: client 11 has entered the MCD
+93.9359: client 12 has entered the MCD
+95.3648: client 13 has entered the MCD
+96.2909: client 14 has entered the MCD
+96.3956: client 12 has made an oder:
+	1 burgers
+	1 additions
+	1 fries
+	0 drinks
+96.5798: Frier is packing fries...
+96.8031: addition is ordered
+96.9693: 1 buns are filled in toater
+97.0163: raw is starting to prepare
+97.1159: addition is being packed
+97.3337: client 11 has made an oder:
 	1 burgers
 	1 additions
 	0 fries
 	1 drinks
-87.2335: client 7 has paid for his order
-87.2335: client 7 wants to eat in MCD
-87.2335: client 7 starts to wait for his order
-87.4408: addition is ordered
-87.6028: 1 buns are filled in toater
-87.6871: addition is being packed
-87.6935: raw is starting to prepare
-88.2078: 1 buns are being transfered to the line
-88.4308: one burger is being filled
-88.6271: one burger is being packed
-90.2471: raw is transfering to tray
+97.5333: 1 buns are being transfered to the line
+97.7419: one burger is being filled
+97.8135: addition is ordered
+98.0048: raw is starting to prepare
+98.0287: 1 buns are filled in toater
+98.053: addition is being packed
+98.2319: one burger is being packed
+98.6089: 1 buns are being transfered to the line
+98.8122: one burger is being filled
+99.0408: one burger is being packed
+99.1184: client 13 has made an oder:
+	1 burgers
+	1 additions
+	1 fries
+	1 drinks
+99.2756: Frier is preparing fries...
+99.4167: addition is ordered
+99.5173: Frier is packing fries...
+99.6196: 1 buns are filled in toater
+99.6786: addition is being packed
+99.7177: raw is starting to prepare
+99.7752: client 14 has made an oder:
+	0 burgers
+	3 additions
+	1 fries
+	1 drinks
+99.8178: raw is transfering to tray
+99.9697: Frier is packing fries...
 6
