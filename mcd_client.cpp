@@ -25,22 +25,42 @@ void Client::makeAnOrder() {
     bool orderAddition = Random() < orderAdditionChance ? true : false;
     bool orderDrink = Random() < orderDrinkChance ? true : false;
 
-    if (orderBurger) burgers++;
-    if (orderFries) fries++;
-    if (orderAddition) additions++;
-    if (orderDrink) drinks++;
-
-    while (orderBurger && Random() < orderAnotherBurgerChance)
+    if (orderBurger) {
+        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
         burgers++;
-    
-    while (orderAddition && Random() < orderAnotherAdditionChance)
-        additions++;
-    
-    while (orderFries && Random() < orderAnotherFriesChance)
+    }
+    if (orderFries) {
+        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
         fries++;
-    
-    while (orderDrink && Random() < orderAnotherDrinkChance)
+    }
+    if (orderAddition) {
+        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
+        additions++;
+    }
+    if (orderDrink) {
+        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
         drinks++;
+    }
+
+    while (orderBurger && Random() < orderAnotherBurgerChance) {
+        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
+        burgers++;
+    }
+    
+    while (orderAddition && Random() < orderAnotherAdditionChance) {
+        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
+        additions++;
+    }
+    
+    while (orderFries && Random() < orderAnotherFriesChance) {
+        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
+        fries++;
+    }
+    
+    while (orderDrink && Random() < orderAnotherDrinkChance) {
+        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
+        drinks++;
+    }
 }
 
 void Client::Behavior() {

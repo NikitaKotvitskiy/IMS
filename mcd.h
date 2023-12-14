@@ -17,11 +17,11 @@ using namespace std;
 
 // Debugging parameters
 const bool CLIENT_DEBUG_MODE = true;
-const bool KITCHEN_DEBUG_MODE = true;
-const bool SERVICE_DEBUG_MODE = true;
+const bool KITCHEN_DEBUG_MODE = false;
+const bool SERVICE_DEBUG_MODE = false;
 const bool FRIES_DEBUG_MODE = true;
-const bool LOBBY_DEBUG_MODE = true;
-const bool BEVERAGE_DEBUG_MODE = true;
+const bool LOBBY_DEBUG_MODE = false;
+const bool BEVERAGE_DEBUG_MODE = false;
 extern int clientCounter;
 
 // This structure describes state of a table in MCD

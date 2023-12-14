@@ -15,11 +15,11 @@ Order::Order(int b, int a, int f, int d, bool p, Client * c) {
 
 void Order::Behavior() {
     friesOrderCount += fries;
-    for (int i = 0; i < friesOrderCount; i++)
+    for (int i = 0; i < fries; i++)
         friesOrderTimes.push(Time);
 
     drinksOrderCount += drinks;
-    for (int i = 0; i < drinksOrderCount; i++)
+    for (int i = 0; i < drinks; i++)
         drinksOrderTimes.push(Time);
 
     for (int i = 0; i < burgers; i++) {

@@ -5,7 +5,7 @@
 using namespace std;
 
 int main() {
-    Init(0, 300);
+    Init(0, 45);
     initMCD();
     Run();
     SetOutput("Stats");
