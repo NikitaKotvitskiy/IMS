@@ -33,7 +33,7 @@ struct Table {
 
 extern Facility cashRegisters[cashRegisterCount];
 extern Facility kiosks[kioskCount];
-extern Queue extradition;
+extern queue<Client *> extradition;
 extern Table tables[tableCount];
 
 // Ready production

@@ -7,6 +7,7 @@ class ServiceWorker : public Process {
 public:
     void extraditeOrder();
     void tryToPackOrder();
+    void processClientRequest();
 };
 
 class Packer : public ServiceWorker {

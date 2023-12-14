@@ -194,7 +194,7 @@ void Client::Behavior() {
 
         if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " asks to pack his order" << endl;
         startWaitTime = Time;
-        extradition.Insert(this);
+        extradition.push(this);
         Passivate();
         dissatisfaction += int(Time - startWaitTime);
         if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " got his packed order and leaves" << endl;
@@ -209,7 +209,7 @@ void Client::Behavior() {
             if (Random() < packRemains) {
                 if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " doesn't want to eat remains, so he goes to ask to pack the remains" << endl;
                 startWaitTime = Time;
-                extradition.Insert(this);
+                extradition.push(this);
                 Passivate();
                 dissatisfaction += int(Time - startWaitTime);
                 if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " got his packed remains, so he leaves" << endl;

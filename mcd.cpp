@@ -8,7 +8,7 @@ int clientCounter = 0;
 
 Facility cashRegisters[cashRegisterCount];
 Facility kiosks[kioskCount];
-Queue extradition;
+queue<Client *> extradition;
 Table tables[tableCount];
 
 int friesPacked = 0;

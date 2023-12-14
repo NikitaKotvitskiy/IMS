@@ -30,9 +30,23 @@ void ServiceWorker::tryToPackOrder() {
     }
 }
 
+void ServiceWorker::processClientRequest() {
+    if (SERVICE_DEBUG_MODE) cout << Time << ": serivce worker has accepted client request and is packing his order" << endl;
+
+    Client * client = extradition.front();
+    extradition.pop();
+    Wait(Normal(packAnOrderTime.center, packAnOrderTime.scattering));
+    client->Activate(Time);
+}
+
 void Extraditor::Behavior() {
     while(true) {
         Wait(Normal(assessTime.center, assessTime.scattering));
+
+        if (!extradition.empty()) {
+            processClientRequest();
+            continue;
+        }
 
         if (!packedOrderQueue.empty())
             extraditeOrder();
@@ -42,6 +56,12 @@ void Extraditor::Behavior() {
 void Packer::Behavior() {
     while(true) {
         Wait(Normal(assessTime.center, assessTime.scattering));
+
+        if (!isExtraditor && !extradition.empty()) {
+            processClientRequest();
+            continue;
+        }
+
         if (!isExtraditor && !packedOrderQueue.empty()) {
             extraditeOrder();
             continue;
