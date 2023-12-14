@@ -1,6 +1,6 @@
 #include <iostream>
 #include "simlib.h"
-#include "mcd.h"
+#include "../headers/mcd.h"
 
 void LobbyWorker::Behavior() {
     while (true)

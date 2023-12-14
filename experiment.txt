@@ -1,0 +1,37 @@
+# Basic parameters
+Count of kiosks:
+Count of tables:
+Dirty table effect: 
+No tables effect:
+Count of fries fryers: 
+Count of portions if fries in one fryer: 
+Count of raw fryers: 
+Count of meat grills: 
+
+# Interval 1
+Time start:
+Time end:
+Count of opened cash registers: 
+Client frquency:
+Count of workers on lobby:
+Count of workers on service:
+Count of workers on beverage:
+Count of workers on kitchen:
+Normal count of fries:
+Normal count of meat:
+Normal count of raw:
+
+# Interval 2
+Time start:
+Time end:
+Count of opened cash registers: 
+Client frquency:
+Count of workers on lobby:
+Count of workers on service:
+Count of workers on beverage:
+Count of workers on kitchen:
+Normal count of fries:
+Normal count of meat:
+Normal count of raw:
+
+...

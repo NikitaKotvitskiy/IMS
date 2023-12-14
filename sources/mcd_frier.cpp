@@ -1,6 +1,6 @@
 #include <iostream>
 #include "simlib.h"
-#include "mcd.h"
+#include "../headers/mcd.h"
 
 int friesReady = 0;
 int friesPreparing = 0;
