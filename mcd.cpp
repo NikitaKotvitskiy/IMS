@@ -17,11 +17,16 @@ int additionsPacked = 0;
 int drinksPacked = 0;
 
 int friesOrderCount = 0;
+queue<double> friesOrderTimes;
+
 int drinksOrderCount = 0;
+queue<double> drinksOrderTimes;
 
 queue<Order *> orderQueue;
 queue<Order *> packedOrderQueue;
 queue<bool> kitchenOrderQueue;
+queue<double> burgerOrderTimes;
+queue<double> additionOrderTimes;
 int neededMeat = 0;
 
 bool isExtraditor;
@@ -33,6 +38,11 @@ void initMCD() {
     kioskQueueTime.SetName("Time in kiosk queue");
     orderWaitingTime.SetName("Time of waiting for an order");
     tableSearchingTime.SetName("Time of table searching");
+
+    burgersTime.SetName("Time of burger preparing");
+    additionsTime.SetName("Time of addition preparing");
+    friesTime.SetName("Time of fries preparing");
+    drinksTime.SetName("Time of drink preparing");
 
     (new ClientGenerator)->Activate(Time);
 
@@ -95,10 +105,16 @@ void ClientGenerator::Behavior() {
     Activate(Time + Exponential(clientTime));
 }
 
-// Statistic
+// Client statistics
 Stat clientInMCDTime;
 Stat cashRegisterQueueTime;
 Stat kioskQueueTime;
 Stat orderWaitingTime;
 Stat clientDissatisfaction;
 Stat tableSearchingTime;
+
+// Kitchen statistics
+Stat burgersTime;
+Stat friesTime;
+Stat drinksTime;
+Stat additionsTime;

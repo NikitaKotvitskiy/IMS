@@ -15,5 +15,9 @@ int main() {
     kioskQueueTime.Output();
     orderWaitingTime.Output();
     tableSearchingTime.Output();
+    burgersTime.Output();
+    additionsTime.Output();
+    friesTime.Output();
+    drinksTime.Output();
     return 0;
 }

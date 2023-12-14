@@ -45,6 +45,9 @@ void KitchenWorker::packAnAddition() {
     Wait(Normal(addPackingTime.center, addPackingTime.scattering));
     additionsPacked++;
     addIsPacking = false;
+
+    additionsTime(Time - additionOrderTimes.front());
+    additionOrderTimes.pop();
 }
 
 void KitchenWorker::packABurger() {
@@ -55,6 +58,9 @@ void KitchenWorker::packABurger() {
         meatReady--;
         Wait(Normal(singleBurgerPackingTime.center, singleBurgerPackingTime.scattering));
         burgersPacked++;
+
+        burgersTime(Time - burgerOrderTimes.front());
+        burgerOrderTimes.pop();
     }
     else {
         if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is packing two burgers" << endl;
@@ -62,6 +68,11 @@ void KitchenWorker::packABurger() {
         meatReady -= 2;
         Wait(Normal(doubleBurgerPackingTime.center, doubleBurgerPackingTime.scattering));
         burgersPacked += 2;
+
+        burgersTime(Time - burgerOrderTimes.front());
+        burgerOrderTimes.pop();
+        burgersTime(Time - burgerOrderTimes.front());
+        burgerOrderTimes.pop();
     }
     burgerIsPacking = false;
 }

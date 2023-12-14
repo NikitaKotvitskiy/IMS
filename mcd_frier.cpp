@@ -32,6 +32,9 @@ void Frier::Behavior() {
             friesReady--;
             Wait(Normal(friesPackingTime.center, friesPackingTime.scattering));
             friesPacked++;
+
+            friesTime(Time - friesOrderTimes.front());
+            friesOrderTimes.pop();
         }
     }
 }

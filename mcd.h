@@ -21,9 +21,10 @@ const bool KITCHEN_DEBUG_MODE = true;
 const bool SERVICE_DEBUG_MODE = true;
 const bool FRIES_DEBUG_MODE = true;
 const bool LOBBY_DEBUG_MODE = true;
+const bool BEVERAGE_DEBUG_MODE = true;
 extern int clientCounter;
 
-
+// This structure describes state of a table in MCD
 struct Table {
     bool busy = false;
     bool dirty = false;
@@ -35,17 +36,24 @@ extern Facility kiosks[kioskCount];
 extern Queue extradition;
 extern Table tables[tableCount];
 
+// Ready production
 extern int friesPacked;
 extern int burgersPacked;
 extern int additionsPacked;
 extern int drinksPacked;
 
+// Needed production
 extern int friesOrderCount;
+extern queue<double> friesOrderTimes;
+
 extern int drinksOrderCount;
+extern queue<double> drinksOrderTimes;
 
 extern queue<Order *> orderQueue;
 extern queue<Order *> packedOrderQueue;
 extern queue<bool> kitchenOrderQueue;
+extern queue<double> burgerOrderTimes;
+extern queue<double> additionOrderTimes;
 extern int neededMeat;
 
 extern bool isExtraditor;
@@ -56,11 +64,18 @@ class ClientGenerator : public Event {
 
 void initMCD();
 
+// Client statistics
 extern Stat clientInMCDTime;
 extern Stat cashRegisterQueueTime;
 extern Stat kioskQueueTime;
 extern Stat orderWaitingTime;
 extern Stat clientDissatisfaction;
 extern Stat tableSearchingTime;
+
+// Kitchen statistics
+extern Stat burgersTime;
+extern Stat friesTime;
+extern Stat drinksTime;
+extern Stat additionsTime;
 
 #endif
