@@ -2,12 +2,16 @@
 #include "simlib.h"
 #include "mcd.h"
 
+int friesReady = 0;
+int friesPreparing = 0;
+int friesFinished = 0;
+
 void Frier::Behavior() {
     while (true) {
         Wait(Normal(assessTime.center, assessTime.scattering));
 
         if (friesFinished != 0) {
-            cout << Time << ": Frier is transfering fries..." << endl;
+            if (FRIES_DEBUG_MODE) cout << Time << ": fries worker is transfering ready fries to tray" << endl;
             friesFinished--;
             Wait(Normal(friesTransferTime.center, friesTransferTime.scattering));
             friesReady += friesPortionsInSlot;
@@ -15,7 +19,7 @@ void Frier::Behavior() {
         }
 
         if (friesReady - friesOrderCount + friesPreparing * friesPortionsInSlot < minimalFries && friesPreparing < frierSlotsCount) {
-            cout << Time << ": Frier is preparing fries..." << endl;
+            if (FRIES_DEBUG_MODE) cout << Time << ": fries worker is preparing new fries" << endl;
             Wait(Normal(friesFryingPrepareTime.center, friesFryingPrepareTime.scattering));
             (new FryingFries)->Activate(Time);
             friesPreparing++;
@@ -23,7 +27,7 @@ void Frier::Behavior() {
         }
 
         if (friesOrderCount != 0) {
-            cout << Time << ": Frier is packing fries..." << endl;
+            if (FRIES_DEBUG_MODE) cout << Time << ": fries worker is packing fries" << endl;
             friesOrderCount--;
             friesReady--;
             Wait(Normal(friesPackingTime.center, friesPackingTime.scattering));

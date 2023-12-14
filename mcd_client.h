@@ -7,6 +7,8 @@ class Order;
 
 class Client : public Process {
 public:
+    int clientNumber;
+    double arriveTime;
     bool orderInCashRegister;
     int burgers = 0;
     int additions = 0;
@@ -19,8 +21,6 @@ public:
     int chosenTable;
     double startWaitTime;
 
-    int clientNumber; // TMP
-
     enum OrderState {
 	    ORDER_START,
 	    ORDER_BURGERS,
@@ -32,6 +32,7 @@ public:
 
     OrderState state = ORDER_START;
 
+    void saveStats();
     void makeAnOrder();
     int chooseFacility();
     void Behavior();

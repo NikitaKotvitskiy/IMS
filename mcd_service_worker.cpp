@@ -3,7 +3,7 @@
 #include "mcd.h"
 
 void ServiceWorker::extraditeOrder() {
-    cout << Time << ": Service worker is extradition the order" << endl;
+    if (SERVICE_DEBUG_MODE) cout << Time << ": serivce worker is extraditing an order" << endl;
     Order * order = packedOrderQueue.front();
     packedOrderQueue.pop();
     Wait(Normal(orderExtraditionTime.center, orderExtraditionTime.scattering));
@@ -18,7 +18,7 @@ void ServiceWorker::tryToPackOrder() {
             if (order->additions != 0 && additionsPacked >= order->additions || order->additions == 0)
                 if (order->fries != 0 && friesPacked >= order->fries || order->fries == 0)
                     if (order->drinks != 0 && drinksPacked >= order->drinks || order->drinks == 0) {
-                        cout << Time << ": Service worker is packing the order" << endl;
+                        if (SERVICE_DEBUG_MODE) cout << Time << ": serivce worker is packing an order" << endl;
                         burgersPacked -= order->burgers;
                         additionsPacked -= order->additions;
                         friesPacked -= order->fries;

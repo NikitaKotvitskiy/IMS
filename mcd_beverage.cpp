@@ -2,6 +2,9 @@
 #include "simlib.h"
 #include "mcd.h"
 
+int drinksFinished = 0;
+int drinksPreparing = 0;
+
 void BeverageWorker::Behavior() {
     while (true) {
         Wait(Normal(assessTime.center, assessTime.scattering));
@@ -24,5 +27,6 @@ void BeverageWorker::Behavior() {
 
 void Drink::Behavior() {
     Wait(drinkFillingTime);
+    drinksPreparing--;
     drinksFinished++;
 }

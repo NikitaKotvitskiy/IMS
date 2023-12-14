@@ -15,8 +15,14 @@
 
 using namespace std;
 
-extern int clientsLeft;        // TMP
-extern int clientCounter;      // TMP
+// Debugging parameters
+const bool CLIENT_DEBUG_MODE = true;
+const bool KITCHEN_DEBUG_MODE = true;
+const bool SERVICE_DEBUG_MODE = true;
+const bool FRIES_DEBUG_MODE = true;
+const bool LOBBY_DEBUG_MODE = true;
+extern int clientCounter;
+
 
 struct Table {
     bool busy = false;
@@ -35,13 +41,7 @@ extern int additionsPacked;
 extern int drinksPacked;
 
 extern int friesOrderCount;
-extern int friesReady;
-extern int friesPreparing;
-extern int friesFinished;
-
 extern int drinksOrderCount;
-extern int drinksFinished;
-extern int drinksPreparing;
 
 extern queue<Order *> orderQueue;
 extern queue<Order *> packedOrderQueue;
@@ -55,5 +55,12 @@ class ClientGenerator : public Event {
 };
 
 void initMCD();
+
+extern Stat clientInMCDTime;
+extern Stat cashRegisterQueueTime;
+extern Stat kioskQueueTime;
+extern Stat orderWaitingTime;
+extern Stat clientDissatisfaction;
+extern Stat tableSearchingTime;
 
 #endif

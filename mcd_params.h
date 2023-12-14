@@ -6,6 +6,9 @@ struct NormalParams {
     double scattering;
 };
 
+// Average gaps between clients
+const double clientTime = 1.5;
+
 // MCD parameters
 const int cashRegisterCount = 2;
 const int kioskCount = 5;

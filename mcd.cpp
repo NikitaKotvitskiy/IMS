@@ -4,7 +4,6 @@
 
 using namespace std;
 
-int clientsLeft = 0;
 int clientCounter = 0;
 
 Facility cashRegisters[cashRegisterCount];
@@ -18,13 +17,7 @@ int additionsPacked = 0;
 int drinksPacked = 0;
 
 int friesOrderCount = 0;
-int friesReady = 0;
-int friesPreparing = 0;
-int friesFinished = 0;
-
 int drinksOrderCount = 0;
-int drinksFinished = 0;
-int drinksPreparing = 0;
 
 queue<Order *> orderQueue;
 queue<Order *> packedOrderQueue;
@@ -34,6 +27,13 @@ int neededMeat = 0;
 bool isExtraditor;
 
 void initMCD() {
+    clientInMCDTime.SetName("Customer time spent in MCD");
+    clientDissatisfaction.SetName("Customer dissatisfaction");
+    cashRegisterQueueTime.SetName("Time in cash register queue");
+    kioskQueueTime.SetName("Time in kiosk queue");
+    orderWaitingTime.SetName("Time of waiting for an order");
+    tableSearchingTime.SetName("Time of table searching");
+
     (new ClientGenerator)->Activate(Time);
 
     for (int i = 0; i < lobbyWorkerCount; i++)
@@ -92,6 +92,13 @@ void initMCD() {
 
 void ClientGenerator::Behavior() {
     (new Client)->Activate(Time);
-    cout << Time << ": client " << clientCounter << " has entered the MCD" << endl;
-    Activate(Time + Exponential(10));
+    Activate(Time + Exponential(clientTime));
 }
+
+// Statistic
+Stat clientInMCDTime;
+Stat cashRegisterQueueTime;
+Stat kioskQueueTime;
+Stat orderWaitingTime;
+Stat clientDissatisfaction;
+Stat tableSearchingTime;

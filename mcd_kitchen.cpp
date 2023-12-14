@@ -23,7 +23,7 @@ int meatOnGrill = 0;
 
 void KitchenWorker::transferRaw() {
     while (rawReady != 0) {
-        cout << Time << ": raw is transfering to tray" << endl;
+        if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is transfering ready raw to the tray" << endl;
         rawReady--;
         Wait(Normal(rawToTrayTime.center, rawToFryerTime.scattering));
         rawInTray++;
@@ -31,37 +31,37 @@ void KitchenWorker::transferRaw() {
 }
 
 void KitchenWorker::prepareRaw() {
+    if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is preparing new raw for cooking" << endl;
     rawPreparing++;
     Wait(Normal(rawToFryerTime.center, rawToFryerTime.scattering));
     (new Raw)->Activate(Time);
-    cout << Time << ": raw is starting to prepare" << endl;
 }
 
 void KitchenWorker::packAnAddition() {
+    if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is packing an addition" << endl; 
     addIsPacking = true;
     addOrder--;
     rawInTray--;
     Wait(Normal(addPackingTime.center, addPackingTime.scattering));
     additionsPacked++;
     addIsPacking = false;
-    cout << Time << ": addition is being packed" << endl;
 }
 
 void KitchenWorker::packABurger() {
     burgerIsPacking = true;
     if (bunsFilled == 1 || bunsFilled > 1 && meatReady == 1) {
+        if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is packing one burger" << endl;
         bunsFilled--;
         meatReady--;
         Wait(Normal(singleBurgerPackingTime.center, singleBurgerPackingTime.scattering));
         burgersPacked++;
-        cout << Time << ": one burger is being packed" << endl;
     }
     else {
+        if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is packing two burgers" << endl;
         bunsFilled -= 2;
         meatReady -= 2;
         Wait(Normal(doubleBurgerPackingTime.center, doubleBurgerPackingTime.scattering));
         burgersPacked += 2;
-        cout << Time << ": two burgers are being packed" << endl;
     }
     burgerIsPacking = false;
 }
@@ -69,26 +69,26 @@ void KitchenWorker::packABurger() {
 void KitchenWorker::fillABurger() {
     burgerFillers++;
     if (bunsOnLine == 1) {
+        if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is filling one burger" << endl;
         bunsOnLine--;
         Wait(Normal(singleBurgerFillingTime.center, singleBurgerFillingTime.scattering));
         bunsFilled++;
-        cout << Time << ": one burger is being filled" << endl;
     }
     else {
+        if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is filling two burgers" << endl;
         bunsOnLine -= 2;
         Wait(Normal(doubleBurgerFillingTime.center, doubleBurgerFillingTime.scattering));
         bunsFilled += 2;
-        cout << Time << ": two burgers are being filled" << endl;
     }
     burgerFillers--;
 }
 
 void KitchenWorker::transferBuns() {
+    if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is transfering ready buns to the line" << endl;
     int x = bunsReady;
     bunsReady = 0;
     Wait(Normal(bunsTransferTime.center, bunsTransferTime.scattering));
     bunsOnLine += x;
-    cout << Time << ": " << x << " buns are being transfered to the line" << endl;
 }
 
 void KitchenWorker::prepareBuns() {
@@ -97,8 +97,8 @@ void KitchenWorker::prepareBuns() {
         bool orderIsBurger = kitchenOrderQueue.front();
         kitchenOrderQueue.pop();
         if (!orderIsBurger) {
+            if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker takes an order for addition" << endl;
             Wait(Normal(addOrderingTime.center, addOrderingTime.scattering));
-            cout << Time << ": addition is ordered" << endl;
             addOrder++;
         }
         else
@@ -106,8 +106,8 @@ void KitchenWorker::prepareBuns() {
     }
     
     if (burgerOrdersAccepted != 0) {
+        if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker gets " << burgerOrdersAccepted << " buns in toaster" << endl;
         Wait(Normal(bunsToToasterTime.center, bunsToToasterTime.scattering));
-        cout << Time << ": " << burgerOrdersAccepted << " buns are filled in toater" << endl;
         bunsInToaster += burgerOrdersAccepted;
         for (int i = 0; i < burgerOrdersAccepted; i++)
             (new Bun)->Activate(Time);
@@ -243,15 +243,15 @@ void Griller::Behavior() {
         Wait(Normal(assessTime.center, assessTime.scattering));
 
         while(meatOnGrill != 0) {
-            cout << Time << ": meat is transfered to tray" << endl;
+            if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is transfering ready meat to the tray" << endl;
             meatOnGrill--;
             Wait(Normal(meatTransferTime.center, meatTransferTime.scattering));
             meatReady += meatOnOnePlot;
         }
 
         if (meatReady + preparingMeat * meatOnOnePlot - neededMeat < meatMinimum && preparingMeat < grillPlots) {
+            if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is preparing new meat" << endl;
             Wait(Normal(meatPreparingStartTime.center, meatPreparingStartTime.scattering));
-            cout << Time << ": meat is preparing" << endl;
             neededMeat -= meatOnOnePlot;
             if (neededMeat < 0)
                 neededMeat = 0;
