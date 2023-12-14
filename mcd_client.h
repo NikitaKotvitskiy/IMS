@@ -21,17 +21,6 @@ public:
     int chosenTable;
     double startWaitTime;
 
-    enum OrderState {
-	    ORDER_START,
-	    ORDER_BURGERS,
-	    ORDER_ADDITIONS,
-	    ORDER_FRIES,
-	    ORDER_DRINKS,
-	    ORDER_END
-    };
-
-    OrderState state = ORDER_START;
-
     void saveStats();
     void makeAnOrder();
     int chooseFacility();

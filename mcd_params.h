@@ -41,25 +41,16 @@ const NormalParams eatOneItemTime = {.center = 1.5, .scattering = 0.04};
 
 // Client chances
 const double kioskChance = 0.5;
-const double orderBurgerFirst = 0.8;
-const double orderAdditionFirst = 0.05;
-const double orderFriesFirst = 0.05;
-const double orderDrinkFirst = 0.05;
-const double cancelOrder = 0.05;
-const double orderAnotherBurger = 0.2;
-const double orderAdditionSecond = 0.6;
-const double orderFriesSecond = 0.05;
-const double orderDrinkSecond = 0.05;
-const double finishAtBurgers = 0.1;
-const double orderAnotherAddition = 0.25;
-const double orderFriesThird = 0.25;
-const double orderDrinkThird = 0.25;
-const double finishAtAdditions = 0.25;
-const double orderAnotherFries = 0.33;
-const double orderDrinkLast = 0.33;
-const double finishAtFries = 0.33;
-const double orderAnotherDrink = 0.5;
-const double finishOrder = 0.5;
+
+const double orderBurgerChance = 0.6;
+const double orderAdditionChance = 0.5;
+const double orderFriesChance = 0.5;
+const double orderDrinkChance = 0.5;
+const double orderAnotherBurgerChance = 0.3;
+const double orderAnotherAdditionChance = 0.25;
+const double orderAnotherFriesChance = 0.3;
+const double orderAnotherDrinkChance = 0.2;
+
 const double payFailed = 0.05;
 const double eatInMCD = 0.5;
 const double denyTable = 0.1;

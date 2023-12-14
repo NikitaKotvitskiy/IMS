@@ -20,80 +20,27 @@ int Client::chooseFacility() {
 }
 
 void Client::makeAnOrder() {
-    while(state != ORDER_END) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        double chance = Random();
-        switch(state) {
-            case ORDER_START:
-                if (chance < orderBurgerFirst) {
-                    burgers++;
-                    state = ORDER_BURGERS;
-                }
-                else if (chance < orderBurgerFirst + orderAdditionFirst) {
-                    additions++;
-                    state = ORDER_ADDITIONS;
-                }
-                else if (chance < orderBurgerFirst + orderAdditionFirst + orderFriesFirst) {
-                    fries++;
-                    state = ORDER_FRIES;
-                }
-                else if (chance < orderBurgerFirst + orderAdditionFirst + orderFriesFirst + orderDrinkFirst) {
-                    drinks++;
-                    state = ORDER_DRINKS;
-                }
-                else
-                    state = ORDER_END;
-                break;
-            case ORDER_BURGERS:
-                if (chance < orderAnotherBurger)
-                    burgers++;
-                else if (chance < orderAnotherBurger + orderAdditionSecond) {
-                    additions++;
-                    state = ORDER_ADDITIONS;
-                }
-                else if (chance < orderAnotherBurger + orderAdditionSecond + orderFriesSecond) {
-                    fries++;
-                    state = ORDER_FRIES;
-                }
-                else if (chance < orderAnotherBurger + orderAdditionSecond + orderFriesSecond + orderDrinkSecond) {
-                    drinks++;
-                    state = ORDER_DRINKS;
-                }
-                else
-                    state = ORDER_END;
-                break;
-            case ORDER_ADDITIONS:
-                if (chance < orderAnotherAddition)
-                    additions++;
-                else if (chance < orderAnotherAddition + orderFriesThird) {
-                    fries++;
-                    state = ORDER_FRIES;
-                }
-                else if (chance < orderAnotherAddition + orderFriesThird + orderDrinkThird) {
-                    drinks++;
-                    state = ORDER_DRINKS;
-                }
-                else
-                    state = ORDER_END;
-                break;
-            case ORDER_FRIES:
-                if (chance < orderAnotherFries)
-                    fries++;
-                else if (chance < orderAnotherFries + orderDrinkLast) {
-                    drinks++;
-                    state = ORDER_DRINKS;
-                }
-                else
-                    state = ORDER_END;
-                break;
-            case ORDER_DRINKS:
-                if (chance < orderAnotherDrink)
-                    drinks++;
-                else
-                    state = ORDER_END;
-                break;
-        }
-    }
+    bool orderBurger = Random() < orderBurgerChance ? true : false;
+    bool orderFries = Random() < orderFriesChance ? true : false;
+    bool orderAddition = Random() < orderAdditionChance ? true : false;
+    bool orderDrink = Random() < orderDrinkChance ? true : false;
+
+    if (orderBurger) burgers++;
+    if (orderFries) fries++;
+    if (orderAddition) additions++;
+    if (orderDrink) drinks++;
+
+    while (orderBurger && Random() < orderAnotherBurgerChance)
+        burgers++;
+    
+    while (orderAddition && Random() < orderAnotherAdditionChance)
+        additions++;
+    
+    while (orderFries && Random() < orderAnotherFriesChance)
+        fries++;
+    
+    while (orderDrink && Random() < orderAnotherDrinkChance)
+        drinks++;
 }
 
 void Client::Behavior() {

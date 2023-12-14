@@ -1,79 +1,78 @@
 +----------------------------------------------------------+
 | STATISTIC Customer time spent in MCD                     |
 +----------------------------------------------------------+
-|  Min = 0.902196                Max = 167.274             |
-|  Number of records = 120                                 |
-|  Average value = 72.5954                                 |
-|  Standard deviation = 48.5202                            |
+|  Min = 0.227073                Max = 130.169             |
+|  Number of records = 139                                 |
+|  Average value = 49.1361                                 |
+|  Standard deviation = 42.1748                            |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Customer dissatisfaction                       |
 +----------------------------------------------------------+
-|  Min = 0                       Max = 164                 |
-|  Number of records = 120                                 |
-|  Average value = 65.5333                                 |
-|  Standard deviation = 48.118                             |
+|  Min = 0                       Max = 122                 |
+|  Number of records = 139                                 |
+|  Average value = 47.0216                                 |
+|  Standard deviation = 41.5032                            |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Time in cash register queue                    |
 +----------------------------------------------------------+
-|  Min = 0                       Max = 36.7864             |
-|  Number of records = 123                                 |
-|  Average value = 15.2222                                 |
-|  Standard deviation = 9.52431                            |
+|  Min = 0                       Max = 0.0120064           |
+|  Number of records = 116                                 |
+|  Average value = 0.000103504                             |
+|  Standard deviation = 0.00111477                         |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Time in kiosk queue                            |
 +----------------------------------------------------------+
-|  Min = 0                       Max = 6.76373             |
-|  Number of records = 105                                 |
-|  Average value = 0.908841                                |
-|  Standard deviation = 1.33402                            |
+|  Min = 0                       Max = 0.0222399           |
+|  Number of records = 99                                  |
+|  Average value = 0.000224645                             |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Time of waiting for an order                   |
 +----------------------------------------------------------+
-|  Min = 3.103                   Max = 135.862             |
-|  Number of records = 105                                 |
-|  Average value = 68.7251                                 |
-|  Standard deviation = 40.7713                            |
+|  Min = 3.67114                 Max = 123.863             |
+|  Number of records = 109                                 |
+|  Average value = 63.713                                  |
+|  Standard deviation = 37.6176                            |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Time of table searching                        |
 +----------------------------------------------------------+
-|  Min = 0.0712931               Max = 0.645186            |
-|  Number of records = 44                                  |
-|  Average value = 0.254484                                |
+|  Min = 0.069862                Max = 0.514069            |
+|  Number of records = 43                                  |
+|  Average value = 0.222859                                |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Time of burger preparing                       |
 +----------------------------------------------------------+
-|  Min = 1.22                    Max = 3.71819             |
-|  Number of records = 189                                 |
-|  Average value = 1.8671                                  |
-|  Standard deviation = 0.524187                           |
+|  Min = 1.15654                 Max = 3.1761              |
+|  Number of records = 151                                 |
+|  Average value = 1.72026                                 |
+|  Standard deviation = 0.497067                           |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Time of addition preparing                     |
 +----------------------------------------------------------+
-|  Min = 0.426092                Max = 4.95363             |
-|  Number of records = 205                                 |
-|  Average value = 1.31414                                 |
-|  Standard deviation = 0.863285                           |
+|  Min = 0.363643                Max = 2.94347             |
+|  Number of records = 121                                 |
+|  Average value = 0.978568                                |
+|  Standard deviation = 0.531418                           |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Time of fries preparing                        |
 +----------------------------------------------------------+
-|  Min = 0.105509                Max = 54.3175             |
-|  Number of records = 121                                 |
-|  Average value = 21.4968                                 |
-|  Standard deviation = 14.9944                            |
+|  Min = 0.0945886               Max = 40.3124             |
+|  Number of records = 145                                 |
+|  Average value = 16.2248                                 |
+|  Standard deviation = 10.945                             |
 +----------------------------------------------------------+
 +----------------------------------------------------------+
 | STATISTIC Time of drink preparing                        |
 +----------------------------------------------------------+
-|  Min = 0.752971                Max = 113.526             |
-|  Number of records = 237                                 |
-|  Average value = 60.4165                                 |
-|  Standard deviation = 36.9394                            |
+|  Min = 0.720628                Max = 43.9793             |
+|  Number of records = 127                                 |
+|  Average value = 15.0037                                 |
+|  Standard deviation = 13.6239                            |
 +----------------------------------------------------------+
