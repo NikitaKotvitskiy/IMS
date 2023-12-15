@@ -127,7 +127,9 @@ void KitchenWorker::prepareBuns() {
 
 void FinisherFryer::Behavior() {
     while(true) {
+        kitchenWorkerFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        kitchenWorkerFree[id] = false;
 
         if (rawReady != 0)
             transferRaw();
@@ -139,7 +141,9 @@ void FinisherFryer::Behavior() {
 
 void FinisherPacker::Behavior() {
     while(true) {
+        kitchenWorkerFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        kitchenWorkerFree[id] = false;
 
         if (addIsPacking)
             continue;
@@ -167,7 +171,9 @@ void FinisherPacker::Behavior() {
 
 void SingleFinisher::Behavior() {
     while(true) {
+        kitchenWorkerFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        kitchenWorkerFree[id] = false;
 
         if (rawReady != 0)
             transferRaw();
@@ -203,7 +209,9 @@ void SingleFinisher::Behavior() {
 
 void Assambler::Behavior() {
     while(true) {
+        kitchenWorkerFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        kitchenWorkerFree[id] = false;
 
         if (!addIsPacking && !burgerIsPacking && addOrder != 0 && rawInTray != 0) {
             packAnAddition();
@@ -222,7 +230,9 @@ void Assambler::Behavior() {
 
 void Iniciator::Behavior() {
     while(true) {
+        kitchenWorkerFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        kitchenWorkerFree[id] = false;
 
         if (bunsReady != 0) {
             transferBuns();

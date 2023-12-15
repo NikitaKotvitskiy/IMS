@@ -17,12 +17,30 @@ using namespace std;
 
 // Debugging parameters
 const bool CLIENT_DEBUG_MODE = true;
-const bool KITCHEN_DEBUG_MODE = false;
-const bool SERVICE_DEBUG_MODE = false;
+const bool KITCHEN_DEBUG_MODE = true;
+const bool SERVICE_DEBUG_MODE = true;
 const bool FRIES_DEBUG_MODE = true;
-const bool LOBBY_DEBUG_MODE = false;
-const bool BEVERAGE_DEBUG_MODE = false;
+const bool LOBBY_DEBUG_MODE = true;
+const bool BEVERAGE_DEBUG_MODE = true;
 extern int clientCounter;
+
+struct ExperimentInterval {
+    double intervalLength;
+    double clientFrequency;
+    int lobbyWorkers;
+    int serviceWorkers;
+    int beverageWorkers;
+    int kitchenWorkers;
+    int friesCount;
+    int meatCount;
+    int rawCount;
+};
+
+extern queue<ExperimentInterval> experiment;
+void readExperiment();
+extern double experimentTime;
+void printStats();
+void setStatNames(int intervalNum);
 
 // This structure describes state of a table in MCD
 struct Table {
@@ -31,10 +49,23 @@ struct Table {
     bool inService = false;
 };
 
-extern Facility cashRegisters[cashRegisterCount];
-extern Facility kiosks[kioskCount];
+extern vector<Facility *> cashRegisters;
+extern vector<Facility *> kiosks;
+extern vector<Table> tables;
 extern queue<Client *> extradition;
-extern Table tables[tableCount];
+
+extern int lobbyWorkerCount;
+extern vector<bool> lobbyWorkerFree;
+extern vector<LobbyWorker *> lobbyWorkersVec;
+extern int serviceWorkerCount;
+extern vector<bool> serviceWorkerFree;
+extern vector<ServiceWorker * > serviceWorkersVec;
+extern int beverageWorkerCount;
+extern vector<bool> beverageWorkersFree;
+extern vector<BeverageWorker * > beverageWorkersVec;
+extern int kitchenWorkerCount;
+extern vector<bool> kitchenWorkerFree;
+extern vector<KitchenWorker *> kitchenWorkersVec;
 
 // Ready production
 extern int friesPacked;
@@ -61,8 +92,6 @@ extern bool isExtraditor;
 class ClientGenerator : public Event {
     void Behavior();
 };
-
-void initMCD();
 
 // Client statistics
 extern Stat clientInMCDTime;

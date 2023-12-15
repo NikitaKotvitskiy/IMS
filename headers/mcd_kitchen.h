@@ -5,6 +5,8 @@
 
 class KitchenWorker : public Process {
 public:
+    int id;
+    
     void transferRaw();
     void prepareRaw();
     void packAnAddition();

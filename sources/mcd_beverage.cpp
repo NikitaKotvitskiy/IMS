@@ -7,7 +7,9 @@ int drinksPreparing = 0;
 
 void BeverageWorker::Behavior() {
     while (true) {
+        beverageWorkersFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        beverageWorkersFree[id] = false;
 
         if (drinksFinished != 0) {
             if (BEVERAGE_DEBUG_MODE) cout << Time << ": beverage worker is packing drink" << endl;

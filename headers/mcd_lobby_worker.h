@@ -4,6 +4,9 @@
 #include "simlib.h"
 
 class LobbyWorker : public Process {
+public:
+    int id;
+    
     void Behavior();
 };
 

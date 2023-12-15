@@ -5,6 +5,8 @@
 
 class ServiceWorker : public Process {
 public:
+    int id;
+    
     void extraditeOrder();
     void tryToPackOrder();
     void processClientRequest();

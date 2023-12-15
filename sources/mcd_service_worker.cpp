@@ -41,7 +41,9 @@ void ServiceWorker::processClientRequest() {
 
 void Extraditor::Behavior() {
     while(true) {
+        serviceWorkerFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        serviceWorkerFree[id] = false;
 
         if (!extradition.empty()) {
             processClientRequest();
@@ -55,7 +57,9 @@ void Extraditor::Behavior() {
 
 void Packer::Behavior() {
     while(true) {
+        serviceWorkerFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        serviceWorkerFree[id] = false;
 
         if (!isExtraditor && !extradition.empty()) {
             processClientRequest();

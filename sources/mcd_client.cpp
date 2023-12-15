@@ -12,10 +12,15 @@ void Client::saveStats() {
 int Client::chooseFacility() {
     Wait(orderInCashRegister ? Normal(whichCashRegister.center, whichCashRegister.scattering) : Normal(whichKiosk.center, whichKiosk.scattering));
     int idx = 0;
-    Facility * fac = orderInCashRegister ? cashRegisters : kiosks;
-    for (int i = 1; i < (orderInCashRegister ? cashRegisterCount : kioskCount); i++)
-        if (fac[i].QueueLen() < fac[idx].QueueLen())
-            idx = i;
+    if (orderInCashRegister)
+        for (int i = 1; i < cashRegisterCount; i++)
+            if (cashRegisters[i]->QueueLen() < cashRegisters[idx]->QueueLen())
+                idx = i;
+    else
+        for (int i = 1; i < kioskCount; i++)
+            if (kiosks[i]->QueueLen() < kiosks[idx]->QueueLen())
+                idx = i;
+
     return idx;
 }
 
@@ -77,7 +82,7 @@ void Client::Behavior() {
     if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " has chosen " << (orderInCashRegister ? "cash register " : "kiosk ") << idx << endl;
 
     startWaitTime = Time;
-    Seize(orderInCashRegister ? cashRegisters[idx] : kiosks[idx]);
+    Seize(orderInCashRegister ? *(cashRegisters[idx]) : *(kiosks[idx]));
     dissatisfaction += int(Time - startWaitTime);
     orderInCashRegister ? cashRegisterQueueTime(Time - startWaitTime) : kioskQueueTime(Time - startWaitTime);
     if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " was in queue for " << Time - startWaitTime << " minutes" << endl;
@@ -93,7 +98,7 @@ void Client::Behavior() {
 
     if (burgers + additions + fries + drinks != 0) {
         Wait(Normal(payTime.center, payTime.scattering));
-        Release(orderInCashRegister ? cashRegisters[idx] : kiosks[idx]);
+        Release(orderInCashRegister ? *(cashRegisters[idx]) : *(kiosks[idx]));
         if (Random() < payFailed) {
             if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " cannot pay, so he leaves" << endl;
             saveStats();
@@ -110,7 +115,7 @@ void Client::Behavior() {
     }
     else {
         if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " didn't choose anything, so he leaves" << endl;
-        Release(orderInCashRegister ? cashRegisters[idx] : kiosks[idx]);
+        Release(orderInCashRegister ? *(cashRegisters[idx]) : *(kiosks[idx]));
         saveStats();
         Cancel();
     }

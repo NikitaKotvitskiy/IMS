@@ -4,6 +4,8 @@
 #include "simlib.h"
 
 class BeverageWorker : public Process {
+public:
+    int id;
     void Behavior();
 };
 

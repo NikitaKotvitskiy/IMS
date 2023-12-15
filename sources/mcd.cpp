@@ -1,15 +1,31 @@
 #include "simlib.h"
 #include "../headers/mcd.h"
 #include <queue>
+#include <fstream>
+#include <sstream>
+#include <string>
 
 using namespace std;
 
 int clientCounter = 0;
 
-Facility cashRegisters[cashRegisterCount];
-Facility kiosks[kioskCount];
+vector<Facility *> cashRegisters;
+vector<Facility *> kiosks;
+vector<Table> tables;
 queue<Client *> extradition;
-Table tables[tableCount];
+
+int lobbyWorkerCount = 0;
+vector<bool> lobbyWorkerFree;
+vector<LobbyWorker *> lobbyWorkersVec;
+int serviceWorkerCount = 0;
+vector<bool> serviceWorkerFree;
+vector<ServiceWorker *> serviceWorkersVec;
+int beverageWorkerCount = 0;
+vector<bool> beverageWorkersFree;
+vector<BeverageWorker *> beverageWorkersVec;
+int kitchenWorkerCount = 0;
+vector<bool> kitchenWorkerFree;
+vector<KitchenWorker *> kitchenWorkersVec;
 
 int friesPacked = 0;
 int burgersPacked = 0;
@@ -31,75 +47,6 @@ int neededMeat = 0;
 
 bool isExtraditor;
 
-void initMCD() {
-    clientInMCDTime.SetName("Customer time spent in MCD");
-    clientDissatisfaction.SetName("Customer dissatisfaction");
-    cashRegisterQueueTime.SetName("Time in cash register queue");
-    kioskQueueTime.SetName("Time in kiosk queue");
-    orderWaitingTime.SetName("Time of waiting for an order");
-    tableSearchingTime.SetName("Time of table searching");
-
-    burgersTime.SetName("Time of burger preparing");
-    additionsTime.SetName("Time of addition preparing");
-    friesTime.SetName("Time of fries preparing");
-    drinksTime.SetName("Time of drink preparing");
-
-    (new ClientGenerator)->Activate(Time);
-
-    for (int i = 0; i < lobbyWorkerCount; i++)
-        (new LobbyWorker)->Activate(Time);
-    
-    switch (serviceWorkerCount) {
-        case 1:
-            isExtraditor = false;
-            (new Packer)->Activate(Time);
-            break;
-        case 2:
-            isExtraditor = true;
-            (new Packer)->Activate(Time);
-            (new Extraditor)->Activate(Time);
-            break;
-        case 3:
-            isExtraditor = true;
-            (new Packer)->Activate(Time);
-            (new Packer)->Activate(Time);
-            (new Extraditor)->Activate(Time);
-            break;
-        case 4:
-            isExtraditor = true;
-            (new Packer)->Activate(Time);
-            (new Packer)->Activate(Time);
-            (new Extraditor)->Activate(Time);
-            (new Extraditor)->Activate(Time);
-            break;
-    }
-
-    (new Frier)->Activate(Time);
-
-    for (int i = 0; i < beverageWorkerCount; i++)
-        (new BeverageWorker)->Activate(Time);
-    
-    switch (kitchenWorkerCount) {
-        case 2:
-            (new SingleFinisher)->Activate(Time);
-            (new Iniciator)->Activate(Time);
-            break;
-        case 3:
-            (new SingleFinisher)->Activate(Time);
-            (new Assambler)->Activate(Time);
-            (new Iniciator)->Activate(Time);
-            break;
-        case 4:
-            (new FinisherFryer)->Activate(Time);
-            (new FinisherPacker)->Activate(Time);
-            (new Assambler)->Activate(Time);
-            (new Iniciator)->Activate(Time);
-            break;
-    }
-
-    (new Griller)->Activate(Time);
-}
-
 void ClientGenerator::Behavior() {
     (new Client)->Activate(Time);
     Activate(Time + Exponential(clientTime));
@@ -118,3 +65,147 @@ Stat burgersTime;
 Stat friesTime;
 Stat drinksTime;
 Stat additionsTime;
+
+
+void errorExit(string message) {
+    cerr << message << endl;
+    exit(1);
+}
+
+queue<ExperimentInterval> experiment;
+double experimentTime = 0;
+
+enum LineMeaning {
+    KIOSK_COUNT,
+    CASH_REGS,
+    TABLE_COUNT,
+    DIRTY_EFFECT,
+    NO_TABLE_EFFECT,
+    FRIES_FRYER_COUNT,
+    FRIES_PORTIONS_COUNT,
+    RAW_FRYER_COUNT,
+    MEAT_GRILLS_COUNT,
+
+    EXP_TIME,
+    CLIENT_FREQ,
+    LOBBY,
+    SERVICE,
+    BEVERAGE,
+    KITCHEN,
+    MIN_FRIES,
+    MIN_MEAT,
+    MIN_RAW
+};
+
+void readExperiment() {
+    ifstream file("experiment.txt");
+    if (!file.is_open())
+        errorExit("Error: experiment file cannot be opened");
+
+    string line;
+    int lineCounter = KIOSK_COUNT;
+    while (getline(file, line)) {
+        if (line.empty() || line[0] == '#')
+            continue;
+        
+        size_t lastSpacePos = line.find_last_of(' ');
+        string valueString = line.substr(lastSpacePos + 1);
+        ExperimentInterval interval;
+        switch (lineCounter) {
+            case KIOSK_COUNT:
+                istringstream(valueString) >> kioskCount;
+                if (kioskCount <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case CASH_REGS:
+                istringstream(valueString) >> cashRegisterCount;
+                if (cashRegisterCount <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case TABLE_COUNT:
+                istringstream(valueString) >> tableCount;
+                if (kioskCount <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case DIRTY_EFFECT:
+                istringstream(valueString) >> dirtyTableInf;
+                if (kioskCount < 0)
+                    errorExit("Error: dissatisfaction effect cannot be negative!");
+                break;
+            case NO_TABLE_EFFECT:
+                istringstream(valueString) >> noTableInf;
+                if (kioskCount < 0)
+                    errorExit("Error: dissatisfaction effect cannot be negative!");
+                break;
+            case FRIES_FRYER_COUNT:
+                istringstream(valueString) >> frierSlotsCount;
+                if (kioskCount <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case RAW_FRYER_COUNT:
+                istringstream(valueString) >> rawFryerCount;
+                if (kioskCount <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case MEAT_GRILLS_COUNT:
+                istringstream(valueString) >> grillPlots;
+                if (kioskCount <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case EXP_TIME:
+                istringstream(valueString) >> interval.intervalLength;
+                experimentTime += interval.intervalLength;
+                if (interval.intervalLength <= 0)
+                    errorExit("Error: time of experiment interval must be greater than zero!");
+                break;
+            case CLIENT_FREQ:
+                istringstream(valueString) >> interval.clientFrequency;
+                if (interval.clientFrequency <= 0)
+                    errorExit("Error: client frequency cannot be negative!");
+                break;
+            case LOBBY:
+                istringstream(valueString) >> interval.lobbyWorkers;
+                if (interval.lobbyWorkers <= 0)
+                    errorExit("Error: count of lobby workers must be greater than zero");
+                break;
+            case SERVICE:
+                istringstream(valueString) >> interval.serviceWorkers;
+                if (interval.serviceWorkers < 1 || interval.serviceWorkers > 4)
+                    errorExit("Error: count of service workers can be 1, 2, 3 or 4 only!");
+                break;
+            case BEVERAGE:
+                istringstream(valueString) >> interval.beverageWorkers;
+                if (interval.beverageWorkers <= 0)
+                    errorExit("Error: count of beverage workers must be greater than zero");
+                break;
+            case KITCHEN:
+                istringstream(valueString) >> interval.kitchenWorkers;
+                if (interval.kitchenWorkers < 2 || interval.kitchenWorkers > 4)
+                    errorExit("Error: count of kitchen workers can be 2, 3 or 4 only!");
+                break;
+            case MIN_FRIES:
+                istringstream(valueString) >> interval.friesCount;
+                if (interval.friesCount <= 0)
+                    errorExit("Error: normal count of fries must be reater than zero");
+                break;
+            case MIN_MEAT:
+                istringstream(valueString) >> interval.meatCount;
+                if (interval.meatCount <= 0)
+                    errorExit("Error: normal count of meat must be reater than zero");
+                break;
+            case MIN_RAW:
+                istringstream(valueString) >> interval.rawCount;
+                if (interval.rawCount <= 0)
+                    errorExit("Error: normal count of raw must be reater than zero");
+                experiment.push(interval);
+                lineCounter = MEAT_GRILLS_COUNT;
+                break;
+            default:
+                break;
+        }
+        lineCounter++;
+    }
+
+    if (experiment.size() == 0)
+        errorExit("Error: at least one experiment interval must be described in experiment.txt");
+}

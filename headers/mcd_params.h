@@ -1,5 +1,9 @@
 #ifndef MCD_PARAMS_H
 #define MCD_PARAMS_H
+#include <queue>
+#include <vector>
+
+using namespace std;
 
 struct NormalParams {
     double center;
@@ -7,22 +11,16 @@ struct NormalParams {
 };
 
 // Average gaps between clients
-const double clientTime = 1;
+extern double clientTime;
 
 // MCD parameters
-const int cashRegisterCount = 2;
-const int kioskCount = 5;
-const int tableCount = 10;
+extern int cashRegisterCount;
+extern int kioskCount;
+extern int tableCount;
 
 // Clients params
-const int dirtyTableInf = 5;
-const int noTableInf = 5;
-
-// Workers params
-const int lobbyWorkerCount = 1;
-const int serviceWorkerCount = 2;
-const int beverageWorkerCount = 1;
-const int kitchenWorkerCount = 4;
+extern int dirtyTableInf;
+extern int noTableInf;
 
 //
 // Client parameters
@@ -70,9 +68,9 @@ const NormalParams packAnOrderTime      = {.center = 0.50, .scattering = 0.10};
 const NormalParams orderExtraditionTime = {.center = 0.16, .scattering = 0.03};
 
 // Frier parameters 
-const int minimalFries          = 18;
-const int frierSlotsCount       = 4;
-const int friesPortionsInSlot   = 6;
+extern int minimalFries;
+extern int frierSlotsCount;
+extern int friesPortionsInSlot;
 
 const NormalParams friesPackingTime         = {.center = 0.08, .scattering = 0.01};
 const NormalParams friesTransferTime        = {.center = 0.10, .scattering = 0.01};
@@ -87,11 +85,11 @@ const NormalParams drinkPackingTime         = {.center = 0.05, .scattering = 0.0
 const double drinkFillingTime               = 0.10;
 
 // Kitchen paraneters
-const int rawMinimum    = 10;
-const int rawFryerCount = 6;
-const int grillPlots    = 4;
-const int meatMinimum   = 12;
-const int meatOnOnePlot = 6;
+extern int rawMinimum;
+extern int rawFryerCount;
+extern int grillPlots;
+extern int meatMinimum;
+extern int meatOnOnePlot;
 
 const NormalParams bunsTransferTime         = {.center = 0.08, .scattering = 0.015};
 const NormalParams bunsToToasterTime        = {.center = 0.06, .scattering = 0.005};
@@ -108,5 +106,11 @@ const NormalParams meatTransferTime         = {.center = 0.48, .scattering = 0.0
 const double meatTime                       = 1.25;
 const double rawTime                        = 3.90;
 const double bunTime                        = 0.36;
+
+class Experiment : public Process {
+public:
+    int experimentCounter = 1;
+    void Behavior();
+};
 
 #endif

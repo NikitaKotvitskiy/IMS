@@ -5,7 +5,9 @@
 void LobbyWorker::Behavior() {
     while (true)
     {
+        lobbyWorkerFree[id] = true;
         Wait(Normal(assessTime.center, assessTime.scattering));
+        lobbyWorkerFree[id] = false;
 
         for (int i = 0; i < tableCount; i++)
             if (tables[i].dirty && !(tables[i].inService)) {
