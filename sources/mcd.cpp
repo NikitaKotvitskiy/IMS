@@ -1,3 +1,15 @@
+/******************************************************************************
+ *                                  MCD
+ *                                 mcd.cpp
+ * 
+ *      Authors: Nikita Kotvitskiy  
+ *      Purpose: Contains the definition of variables, which describe state of 
+ *               the restaurant, like count of different workers, statistic,
+ *               count of ready production and so on
+ * 
+ *                        Last change: 16.12.2023
+ *****************************************************************************/
+
 #include "simlib.h"
 #include "../headers/mcd.h"
 #include <queue>
@@ -9,11 +21,13 @@ using namespace std;
 
 int clientCounter = 0;
 
+// Working facilities of system
 vector<Facility *> cashRegisters;
 vector<Facility *> kiosks;
 vector<Table> tables;
 queue<Client *> extradition;
 
+// Worker parameters
 int lobbyWorkerCount = 0;
 vector<bool> lobbyWorkerFree;
 vector<LobbyWorker *> lobbyWorkersVec;
@@ -27,33 +41,35 @@ int kitchenWorkerCount = 0;
 vector<bool> kitchenWorkerFree;
 vector<KitchenWorker *> kitchenWorkersVec;
 
+// Ready production
 int friesPacked = 0;
 int burgersPacked = 0;
 int additionsPacked = 0;
 int drinksPacked = 0;
 
-int friesOrderCount = 0;
-queue<double> friesOrderTimes;
+// Needed production
+int friesOrderCount;
+int drinksOrderCount;
+int neededMeat;
 
-int drinksOrderCount = 0;
-queue<double> drinksOrderTimes;
-
+// Queues of different products orders
 queue<Order *> orderQueue;
 queue<Order *> packedOrderQueue;
 queue<bool> kitchenOrderQueue;
+
+// Time of products preparation start
 queue<double> burgerOrderTimes;
 queue<double> additionOrderTimes;
 queue<double> orderPackExtraditionTimes;
-int neededMeat = 0;
+queue<double> friesOrderTimes;
+queue<double> drinksOrderTimes;
 
+// Is there an extraditor on the service
 bool isExtraditor;
 
-void ClientGenerator::Behavior() {
-    (new Client)->Activate(Time);
-    Activate(Time + Exponential(clientTime));
-}
-
-// Client statistics
+//
+// Statistics
+//
 Stat clientInMCDTime;
 Stat wholeClientInMCDTime;
 
@@ -72,7 +88,6 @@ Stat wholeTtableSearchingTime;
 Stat clientDissatisfaction;
 Stat wholeClientDissatisfaction;
 
-// Kitchen statistics
 Stat burgersTime;
 Stat wholeBurgersTime;
 
@@ -88,15 +103,25 @@ Stat wholeAdditionsTime;
 Stat orderExtraditigTime;
 Stat wholeOrderExtraditionTime;
 
+// Client generator behavior
+void ClientGenerator::Behavior() {
+    (new Client)->Activate(Time);
+    Activate(Time + Exponential(clientTime));
+}
 
+// Error exiting while reading the experiment
 void errorExit(string message) {
     cerr << message << endl;
     exit(1);
 }
 
+// Queue of intervals of experiment
 queue<ExperimentInterval> experiment;
+
+// The whole time of experiment
 double experimentTime = 0;
 
+// Count of parameter in experiment.txt
 enum LineMeaning {
     KIOSK_COUNT,
     CASH_REGS,
@@ -121,6 +146,7 @@ enum LineMeaning {
     MIN_RAW
 };
 
+// Reads the experiment and creates a queue of intervals
 void readExperiment() {
     ifstream file("experiment.txt");
     if (!file.is_open())

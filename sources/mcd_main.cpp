@@ -1,9 +1,20 @@
+/******************************************************************************
+ *                                  MCD
+ *                              mcd_main.cpp
+ * 
+ *      Authors: Nikita Kotvitskiy  
+ *      Purpose: Main file
+ * 
+ *                        Last change: 16.12.2023
+ *****************************************************************************/
+
 #include "simlib.h"
 #include "../headers/mcd.h"
 #include <iostream>
 
 using namespace std;
 
+// Prints the whole statistic
 void printWholeStat() {
     wholeClientInMCDTime.SetName("Whole stat: Customer time spent in MCD");
     wholeClientDissatisfaction.SetName("Whole stat: Customer dissatisfaction");

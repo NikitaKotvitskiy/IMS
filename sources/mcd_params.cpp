@@ -1,3 +1,17 @@
+/******************************************************************************
+ *                                  MCD
+ *                              mcd_params.h
+ * 
+ *      Authors: Nikita Kotvitskiy  
+ *      Purpose: Contains the definitions of average and constant parameters of the
+ *               restaurant, like the count of different facilities, chances and time
+ *               characteristics.
+ *               It also contains the definitions for experiment manager and
+ *               manipulating with statistics
+ * 
+ *                        Last change: 16.12.2023
+ *****************************************************************************/
+
 #include <iostream>
 #include <list>
 #include "simlib.h"
@@ -6,27 +20,34 @@
 
 using namespace std;
 
+// Average gaps between clients
 double clientTime;
 
+// MCD devices count
 int kioskCount;
 int cashRegisterCount;
 int tableCount;
-int dirtyTableInf;
-int noTableInf;
 int frierSlotsCount;
 int rawFryerCount;
 int grillPlots;
 
+
+// Client addition parameters
+int dirtyTableInf;
+int noTableInf;
+
+// Workers addition parameters
 int minimalFries;
 int friesPortionsInSlot;
-
 int rawMinimum;
 int meatMinimum;
 int meatOnOnePlot;
 int rawPortionsInFryer;;
 
+// Count of experiment intervals
 int intervalsCount = 0;
 
+// Sets the names of different statistics depending on current experiment interval and cleans the temporary statistics
 void setStatNames(int intervalNum) {
     clientInMCDTime.Clear();
     cashRegisterQueueTime.Clear();
@@ -53,6 +74,7 @@ void setStatNames(int intervalNum) {
     orderExtraditigTime.SetName("Interval " + to_string(intervalNum) + ": Time of order extraditing");
 }
 
+// Prints the statistics of the last experiment interval
 void printStats() {
     clientInMCDTime.Output();
     cashRegisterQueueTime.Output();
@@ -67,6 +89,7 @@ void printStats() {
     orderExtraditigTime.Output();
 }
 
+// Generates kiosks, cash registers and tables
 void setConstantParams() {
     for (int i = 0; i < cashRegisterCount; i++)
         cashRegisters.push_back(new Facility());
@@ -78,25 +101,29 @@ void setConstantParams() {
     }
 }
 
+// Behavior of experiment
 void Experiment::Behavior() {
     intervalsCount = experiment.size();
     setConstantParams();
 
+    // Activation of constant workers
     (new Griller)->Activate();
     (new Frier)->Activate();
     (new ClientGenerator)->Activate();
 
-    Seize(*(cashRegisters)[0]);
-    Release(*(cashRegisters)[0]);
-
-    int experimentCounter = 1;
+    // Set the first names of statistics
     setStatNames(experimentCounter);
 
+    // Foreach interval of experiment
     while (!experiment.empty()) {
+        // Get the next interval
         ExperimentInterval currentInterval = experiment.front();
         experiment.pop();
 
+        // Count the difference between new lobby workers and current ones
         int difference = currentInterval.lobbyWorkers - lobbyWorkerCount;
+
+        // If this difference is positive, create new lobby workers
         if (difference > 0)
             for (int i = 0; i < difference; i++) {
                 LobbyWorker * worker = new LobbyWorker();
@@ -105,6 +132,8 @@ void Experiment::Behavior() {
                 lobbyWorkerFree.push_back(true);
                 worker->Activate();
             }
+        
+        // If this difference is negative, wait until unncessary workers will finish their work and "kill" them
         else if (difference < 0) {
             for (int i = 0; i < abs(difference); i++) {
                 while (!lobbyWorkerFree[lobbyWorkerCount - 1])
@@ -115,6 +144,7 @@ void Experiment::Behavior() {
             }
         }
 
+        // Do the same for beverage workers
         difference = currentInterval.beverageWorkers - beverageWorkerCount;
         if (difference > 0)
             for (int i = 0; i < difference; i++) {
@@ -135,8 +165,12 @@ void Experiment::Behavior() {
             }
         }
 
+        // Count the difference between new service workers and current ones
         difference = currentInterval.serviceWorkers - serviceWorkerCount;
+
+        // If the difference is non-zero
         if (difference != 0) {
+            // Whait until all workers will finish their work and "kill" them
             for (int i = 0; i < serviceWorkerCount; i++) {
                 while (!serviceWorkerFree[i]) 
                     Wait(0.005);
@@ -146,13 +180,16 @@ void Experiment::Behavior() {
             serviceWorkerFree.clear();
             serviceWorkerCount = 0;
 
+            // Depending on new count of service workers, create new configuration of service
             switch (currentInterval.serviceWorkers) {
+                // If there is only one worker, he will be packer
                 case 1: {
                     Packer * worker = new Packer();
                     worker->id = serviceWorkerCount++;
                     serviceWorkersVec.push_back(worker);
                     break;
                 }
+                // If there are two workers, one of them will be packer, second one is extraditor
                 case 2: {
                     Packer * worker1 = new Packer();
                     Extraditor * worker2 = new Extraditor();
@@ -162,6 +199,7 @@ void Experiment::Behavior() {
                     serviceWorkersVec.push_back(worker2);
                     break;
                 }
+                // If there are three workers, there will be two packers and one extraditor
                 case 3: {
                     Packer * worker1 = new Packer();
                     Packer * worker2 = new Packer();
@@ -174,6 +212,7 @@ void Experiment::Behavior() {
                     serviceWorkersVec.push_back(worker3);
                     break;
                 }
+                // If there are four workers, two of them will be packers and other two - extraditors
                 case 4: {
                     Packer * worker1 = new Packer();
                     Packer * worker2 = new Packer();
@@ -191,12 +230,14 @@ void Experiment::Behavior() {
                 }
             }
 
+            // Activate all service workers
             for (int i = 0; i < serviceWorkerCount; i++) {
                 serviceWorkerFree.push_back(true);
                 serviceWorkersVec[i]->Activate(Time);
             }
         }
 
+        // Do the same for kitchen
         difference = currentInterval.kitchenWorkers - kitchenWorkerCount;
         if (difference != 0) {
             for (int i = 0; i < kitchenWorkerCount; i++) {
@@ -209,6 +250,7 @@ void Experiment::Behavior() {
             kitchenWorkerCount = 0;
 
             switch (currentInterval.kitchenWorkers) {
+                // Two workers: iniciator and single finisher
                 case 2: {
                     SingleFinisher * worker1 = new SingleFinisher();
                     Iniciator * worker2 = new Iniciator();
@@ -218,6 +260,7 @@ void Experiment::Behavior() {
                     kitchenWorkersVec.push_back(worker2);
                     break;
                 }
+                // Three workers: iniciator, assembler and single finisher
                 case 3: {
                     SingleFinisher * worker1 = new SingleFinisher();
                     Assambler * worker2 = new Assambler();
@@ -230,6 +273,7 @@ void Experiment::Behavior() {
                     kitchenWorkersVec.push_back(worker3);
                     break;
                 }
+                // Four workers: iniciator, assembler, frying finisher and packing finisher
                 case 4: {
                     FinisherFryer * worker1 = new FinisherFryer();
                     FinisherPacker * worker2 = new FinisherPacker();
@@ -253,14 +297,18 @@ void Experiment::Behavior() {
             }
         }
 
+        // Set the parameters of this interval
         clientTime = currentInterval.clientFrequency;
         minimalFries = currentInterval.friesCount;
         meatMinimum = currentInterval.meatCount;
         rawMinimum = currentInterval.rawCount;
 
+        // Sleep until the interval ends
         Wait(currentInterval.intervalLength);
         if (experimentCounter >= intervalsCount)
             break;
+        
+        // Print last interval's statistics
         printStats();
         setStatNames(++experimentCounter);
     }

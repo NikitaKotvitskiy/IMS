@@ -1,9 +1,20 @@
+/******************************************************************************
+ *                                  MCD
+ *                             mcd_order.cpp
+ * 
+ *      Authors: Nikita Kotvitskiy  
+ *      Purpose: Definition of order behavior
+ * 
+ *                        Last change: 16.12.2023
+ *****************************************************************************/
+
 #include <iostream>
 #include "simlib.h"
 #include "../headers/mcd.h"
 
 using namespace std;
 
+// Order constructor
 Order::Order(int b, int a, int f, int d, bool p, Client * c) {
     burgers = b;
     additions = a;

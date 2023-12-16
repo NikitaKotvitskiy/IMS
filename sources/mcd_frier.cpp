@@ -1,3 +1,13 @@
+/******************************************************************************
+ *                                  MCD
+ *                              mcd_frier.cpp
+ * 
+ *      Authors: Nikita Kotvitskiy  
+ *      Purpose: Definition of fries frier workers' behavior
+ * 
+ *                        Last change: 16.12.2023
+ *****************************************************************************/
+
 #include <iostream>
 #include "simlib.h"
 #include "../headers/mcd.h"
@@ -10,6 +20,7 @@ void Frier::Behavior() {
     while (true) {
         Wait(Normal(assessTime.center, assessTime.scattering));
 
+        // If there are ready fries on the fryer, worker will transfer them to the tray
         if (friesFinished != 0) {
             if (FRIES_DEBUG_MODE) cout << Time << ": fries worker is transfering ready fries to tray" << endl;
             friesFinished--;
@@ -18,6 +29,7 @@ void Frier::Behavior() {
             continue;
         }
 
+        // If worker realizes, that the count of ready, prepating and needed fries is less than the count he tries to follow, he will prepare new fries
         if (friesReady - friesOrderCount + friesPreparing * friesPortionsInSlot < minimalFries && friesPreparing < frierSlotsCount) {
             if (FRIES_DEBUG_MODE) cout << Time << ": fries worker is preparing new fries" << endl;
             Wait(Normal(friesFryingPrepareTime.center, friesFryingPrepareTime.scattering));
@@ -26,6 +38,7 @@ void Frier::Behavior() {
             continue;
         }
 
+        // If there is fries order, worker will pack a portion of fries
         if (friesOrderCount != 0) {
             if (FRIES_DEBUG_MODE) cout << Time << ": fries worker is packing fries" << endl;
             friesOrderCount--;

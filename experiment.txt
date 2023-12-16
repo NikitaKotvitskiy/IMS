@@ -5,19 +5,52 @@ Count of tables: 10
 Dirty table effect: 5
 No tables effect: 5
 Count of fries fryers: 4
-Count of portions of fries in one fryer: 5
+Count of portions of fries in one fryer: 3
 Count of meat on one grill : 6
 Count of portions of raw in one fryer: 5
-Count of raw fryers: 5
+Count of raw fryers: 4
 Count of meat grills: 4
 
 # Interval 1
 Time: 60
 Client frquency: 3
 Count of workers on lobby: 1
+Count of workers on service: 2
+Count of workers on beverage: 1
+Count of workers on kitchen: 2
+Normal count of fries: 4
+Normal count of meat: 6
+Normal count of raw: 3
+
+# Interval 2
+Time: 60
+Client frquency: 2
+Count of workers on lobby: 1
+Count of workers on service: 2
+Count of workers on beverage: 1
+Count of workers on kitchen: 3
+Normal count of fries: 4
+Normal count of meat: 6
+Normal count of raw: 3
+
+# Interval 3
+Time: 60
+Client frquency: 1
+Count of workers on lobby: 1
 Count of workers on service: 3
 Count of workers on beverage: 1
 Count of workers on kitchen: 4
-Normal count of fries: 5
+Normal count of fries: 8
+Normal count of meat: 12
+Normal count of raw: 10
+
+# Interval 4
+Time: 60
+Client frquency: 2
+Count of workers on lobby: 1
+Count of workers on service: 3
+Count of workers on beverage: 1
+Count of workers on kitchen: 3
+Normal count of fries: 8
 Normal count of meat: 12
 Normal count of raw: 10
