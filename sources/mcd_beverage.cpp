@@ -18,6 +18,7 @@ void BeverageWorker::Behavior() {
             drinksPacked++;
 
             drinksTime(Time - drinksOrderTimes.front());
+            drinksTime(Time - drinksOrderTimes.front());
             drinksOrderTimes.pop();
 
             continue;

@@ -22,12 +22,10 @@ int preparingMeat = 0;
 int meatOnGrill = 0;
 
 void KitchenWorker::transferRaw() {
-    while (rawReady != 0) {
-        if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is transfering ready raw to the tray" << endl;
-        rawReady--;
-        Wait(Normal(rawToTrayTime.center, rawToFryerTime.scattering));
-        rawInTray++;
-    }
+    if (KITCHEN_DEBUG_MODE) cout << Time << ": kitchen worker is transfering ready raw to the tray" << endl;
+    rawReady--;
+    Wait(Normal(rawToTrayTime.center, rawToFryerTime.scattering));
+    rawInTray += rawPortionsInFryer;
 }
 
 void KitchenWorker::prepareRaw() {
@@ -47,6 +45,7 @@ void KitchenWorker::packAnAddition() {
     addIsPacking = false;
 
     additionsTime(Time - additionOrderTimes.front());
+    wholeAdditionsTime(Time - additionOrderTimes.front());
     additionOrderTimes.pop();
 }
 
@@ -60,6 +59,7 @@ void KitchenWorker::packABurger() {
         burgersPacked++;
 
         burgersTime(Time - burgerOrderTimes.front());
+        wholeBurgersTime(Time - burgerOrderTimes.front());
         burgerOrderTimes.pop();
     }
     else {
@@ -134,7 +134,7 @@ void FinisherFryer::Behavior() {
         if (rawReady != 0)
             transferRaw();
         
-        if (rawInTray + rawPreparing + rawReady - addOrder < rawMinimum && rawPreparing < rawFryerCount)
+        if (rawInTray + rawPreparing * rawPortionsInFryer + rawReady * rawPortionsInFryer - addOrder < rawMinimum && rawPreparing < rawFryerCount)
             prepareRaw();
     }
 }
@@ -178,7 +178,7 @@ void SingleFinisher::Behavior() {
         if (rawReady != 0)
             transferRaw();
         
-        if (rawInTray + rawPreparing + rawReady - addOrder < rawMinimum && rawPreparing < rawFryerCount) {
+        if (rawInTray + rawPreparing * rawPortionsInFryer + rawReady * rawPortionsInFryer - addOrder < rawMinimum && rawPreparing < rawFryerCount) {
             prepareRaw();
             continue;
         }

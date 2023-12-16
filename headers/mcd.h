@@ -16,12 +16,12 @@
 using namespace std;
 
 // Debugging parameters
-const bool CLIENT_DEBUG_MODE = true;
-const bool KITCHEN_DEBUG_MODE = true;
-const bool SERVICE_DEBUG_MODE = true;
-const bool FRIES_DEBUG_MODE = true;
-const bool LOBBY_DEBUG_MODE = true;
-const bool BEVERAGE_DEBUG_MODE = true;
+const bool CLIENT_DEBUG_MODE = false;
+const bool KITCHEN_DEBUG_MODE = false;
+const bool SERVICE_DEBUG_MODE = false;
+const bool FRIES_DEBUG_MODE = false;
+const bool LOBBY_DEBUG_MODE = false;
+const bool BEVERAGE_DEBUG_MODE = false;
 extern int clientCounter;
 
 struct ExperimentInterval {
@@ -85,6 +85,7 @@ extern queue<Order *> packedOrderQueue;
 extern queue<bool> kitchenOrderQueue;
 extern queue<double> burgerOrderTimes;
 extern queue<double> additionOrderTimes;
+extern queue<double> orderPackExtraditionTimes;
 extern int neededMeat;
 
 extern bool isExtraditor;
@@ -93,18 +94,37 @@ class ClientGenerator : public Event {
     void Behavior();
 };
 
-// Client statistics
 extern Stat clientInMCDTime;
-extern Stat cashRegisterQueueTime;
-extern Stat kioskQueueTime;
-extern Stat orderWaitingTime;
-extern Stat clientDissatisfaction;
-extern Stat tableSearchingTime;
+extern Stat wholeClientInMCDTime;
 
-// Kitchen statistics
+extern Stat cashRegisterQueueTime;
+extern Stat wholeCashRegisterQueueTime;
+
+extern Stat kioskQueueTime;
+extern Stat wholeKioskQueueTime;
+
+extern Stat orderWaitingTime;
+extern Stat wholeOrderWaitingTime;
+
+extern Stat tableSearchingTime;
+extern Stat wholeTtableSearchingTime;
+
+extern Stat clientDissatisfaction;
+extern Stat wholeClientDissatisfaction;
+
 extern Stat burgersTime;
+extern Stat wholeBurgersTime;
+
 extern Stat friesTime;
+extern Stat wholeFriesTime;
+
 extern Stat drinksTime;
+extern Stat wholeDrinksTime;
+
 extern Stat additionsTime;
+extern Stat wholeAdditionsTime;
+
+extern Stat orderExtraditigTime;
+extern Stat wholeOrderExtraditionTime;
 
 #endif

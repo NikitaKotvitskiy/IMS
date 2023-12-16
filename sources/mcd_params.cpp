@@ -23,20 +23,22 @@ int friesPortionsInSlot;
 int rawMinimum;
 int meatMinimum;
 int meatOnOnePlot;
+int rawPortionsInFryer;;
 
 int intervalsCount = 0;
 
 void setStatNames(int intervalNum) {
     clientInMCDTime.Clear();
-    clientDissatisfaction.Clear();
     cashRegisterQueueTime.Clear();
     kioskQueueTime.Clear();
     orderWaitingTime.Clear();
     tableSearchingTime.Clear();
+    clientDissatisfaction.Clear();
     burgersTime.Clear();
     additionsTime.Clear();
     friesTime.Clear();
     drinksTime.Clear();
+    orderExtraditigTime.Clear();
 
     clientInMCDTime.SetName("Interval " + to_string(intervalNum) + ": Customer time spent in MCD");
     clientDissatisfaction.SetName("Interval " + to_string(intervalNum) + ": Customer dissatisfaction");
@@ -48,19 +50,21 @@ void setStatNames(int intervalNum) {
     additionsTime.SetName("Interval " + to_string(intervalNum) + ": Time of addition preparing");
     friesTime.SetName("Interval " + to_string(intervalNum) + ": Time of fries preparing");
     drinksTime.SetName("Interval " + to_string(intervalNum) + ": Time of drink preparing");
+    orderExtraditigTime.SetName("Interval " + to_string(intervalNum) + ": Time of order extraditing");
 }
 
 void printStats() {
     clientInMCDTime.Output();
-    clientDissatisfaction.Output();
     cashRegisterQueueTime.Output();
     kioskQueueTime.Output();
     orderWaitingTime.Output();
     tableSearchingTime.Output();
+    clientDissatisfaction.Output();
     burgersTime.Output();
     additionsTime.Output();
     friesTime.Output();
     drinksTime.Output();
+    orderExtraditigTime.Output();
 }
 
 void setConstantParams() {
@@ -255,7 +259,7 @@ void Experiment::Behavior() {
         rawMinimum = currentInterval.rawCount;
 
         Wait(currentInterval.intervalLength);
-        if (experimentCounter > intervalsCount)
+        if (experimentCounter >= intervalsCount)
             break;
         printStats();
         setStatNames(++experimentCounter);

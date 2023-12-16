@@ -30,23 +30,45 @@ extern int noTableInf;
 const NormalParams whereToOrderTime     = {.center = 0.16, .scattering = 0.035};
 const NormalParams whichKiosk           = {.center = 0.08, .scattering = 0.015};
 const NormalParams whichCashRegister    = {.center = 0.08, .scattering = 0.015};
-const NormalParams whatKiosk            = {.center = 0.60, .scattering = 0.120};
-const NormalParams whatCashRegister     = {.center = 0.13, .scattering = 0.025};
+const NormalParams whatKiosk            = {.center = 3.50, .scattering = 0.060};
+const NormalParams whatCashRegister     = {.center = 2.00, .scattering = 0.040};
 const NormalParams payTime              = {.center = 0.16, .scattering = 0.032};
 const NormalParams pickOrderTime        = {.center = 0.08, .scattering = 0.010};
 const NormalParams searchTableTime      = {.center = 0.05, .scattering = 0.010};
 const NormalParams eatOneItemTime       = {.center = 2.00, .scattering = 0.450};
 
 // Client chances
-const double kioskChance                = 0.60;
-const double orderBurgerChance          = 0.80;
-const double orderAdditionChance        = 0.65;
-const double orderFriesChance           = 0.60;
-const double orderDrinkChance           = 0.75;
-const double orderAnotherBurgerChance   = 0.50;
-const double orderAnotherAdditionChance = 0.45;
-const double orderAnotherFriesChance    = 0.45;
-const double orderAnotherDrinkChance    = 0.20;
+const double kioskChance                = 0.50;
+const double smallOrderChance           = 0.7;
+const double middleOrderChance          = 0.25;
+
+const int smallOrderPossibleBurgerCountMin = 0;
+const int smallOrderPossibleBurgerCountMax = 2;
+const int smallOrderPossibleAdditionCountMin = 0;
+const int smallOrderPossibleAdditionCountMax = 2;
+const int smallOrderPossibleFriesCountMin = 0;
+const int smallOrderPossibleFriesCountMax = 2;
+const int smallOrderPossibleDrinkCountMin = 0;
+const int smallOrderPossibleDrinkCountMax = 2;
+
+const int middleOrderPossibleBurgerCountMin = 1;
+const int middleOrderPossibleBurgerCountMax = 3;
+const int middleOrderPossibleAdditionCountMin = 1;
+const int middleOrderPossibleAdditionCountMax = 3;
+const int middleOrderPossibleFriesCountMin = 1;
+const int middleOrderPossibleFriesCountMax = 2;
+const int middleOrderPossibleDrinkCountMin = 1;
+const int middleOrderPossibleDrinkCountMax = 3;
+
+const int bigOrderPossibleBurgerCountMin = 2;
+const int bigOrderPossibleBurgerCountMax = 10;
+const int bigOrderPossibleAdditionCountMin = 2;
+const int bigOrderPossibleAdditionCountMax = 10;
+const int bigOrderPossibleFriesCountMin = 2;
+const int bigOrderPossibleFriesCountMax = 5;
+const int bigOrderPossibleDrinkCountMin = 2;
+const int bigOrderPossibleDrinkCountMax = 6;
+
 const double payFailed                  = 0.01;
 const double eatInMCD                   = 0.50;
 const double denyTable                  = 0.05;
@@ -64,13 +86,14 @@ const NormalParams assessTime = {.center = 0.02, .scattering = 0.004};
 const NormalParams tableCleaningTime = {.center = 0.25, .scattering = 0.05};
 
 // Service workers parameters
-const NormalParams packAnOrderTime      = {.center = 0.50, .scattering = 0.10};
+const NormalParams packAnOrderTime      = {.center = 1.50, .scattering = 0.29};
 const NormalParams orderExtraditionTime = {.center = 0.16, .scattering = 0.03};
 
 // Frier parameters 
 extern int minimalFries;
 extern int frierSlotsCount;
 extern int friesPortionsInSlot;
+extern int rawPortionsInFryer;
 
 const NormalParams friesPackingTime         = {.center = 0.08, .scattering = 0.01};
 const NormalParams friesTransferTime        = {.center = 0.10, .scattering = 0.01};

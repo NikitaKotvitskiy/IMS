@@ -43,6 +43,7 @@ queue<Order *> packedOrderQueue;
 queue<bool> kitchenOrderQueue;
 queue<double> burgerOrderTimes;
 queue<double> additionOrderTimes;
+queue<double> orderPackExtraditionTimes;
 int neededMeat = 0;
 
 bool isExtraditor;
@@ -54,17 +55,38 @@ void ClientGenerator::Behavior() {
 
 // Client statistics
 Stat clientInMCDTime;
+Stat wholeClientInMCDTime;
+
 Stat cashRegisterQueueTime;
+Stat wholeCashRegisterQueueTime;
+
 Stat kioskQueueTime;
+Stat wholeKioskQueueTime;
+
 Stat orderWaitingTime;
-Stat clientDissatisfaction;
+Stat wholeOrderWaitingTime;
+
 Stat tableSearchingTime;
+Stat wholeTtableSearchingTime;
+
+Stat clientDissatisfaction;
+Stat wholeClientDissatisfaction;
 
 // Kitchen statistics
 Stat burgersTime;
+Stat wholeBurgersTime;
+
 Stat friesTime;
+Stat wholeFriesTime;
+
 Stat drinksTime;
+Stat wholeDrinksTime;
+
 Stat additionsTime;
+Stat wholeAdditionsTime;
+
+Stat orderExtraditigTime;
+Stat wholeOrderExtraditionTime;
 
 
 void errorExit(string message) {
@@ -83,6 +105,8 @@ enum LineMeaning {
     NO_TABLE_EFFECT,
     FRIES_FRYER_COUNT,
     FRIES_PORTIONS_COUNT,
+    RAW_PORTIONS_COUNT,
+    MEAT_PORTIONS_COUNT,
     RAW_FRYER_COUNT,
     MEAT_GRILLS_COUNT,
 
@@ -125,6 +149,21 @@ void readExperiment() {
             case TABLE_COUNT:
                 istringstream(valueString) >> tableCount;
                 if (kioskCount <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case FRIES_PORTIONS_COUNT:
+                istringstream(valueString) >> friesPortionsInSlot;
+                if (friesPortionsInSlot <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case MEAT_PORTIONS_COUNT:
+                istringstream(valueString) >> meatOnOnePlot;
+                if (meatOnOnePlot <= 0)
+                    errorExit("Error: count must be greater than zero!");
+                break;
+            case RAW_PORTIONS_COUNT:
+                istringstream(valueString) >> rawPortionsInFryer;
+                if (rawPortionsInFryer <= 0)
                     errorExit("Error: count must be greater than zero!");
                 break;
             case DIRTY_EFFECT:

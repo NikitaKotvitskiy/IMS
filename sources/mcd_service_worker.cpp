@@ -9,6 +9,9 @@ void ServiceWorker::extraditeOrder() {
     Wait(Normal(orderExtraditionTime.center, orderExtraditionTime.scattering));
     order->client->Activate(Time);
     order->Cancel();
+    orderExtraditigTime(Time - orderPackExtraditionTimes.front());
+    wholeOrderExtraditionTime(Time - orderPackExtraditionTimes.front());
+    orderPackExtraditionTimes.pop();
 }
 
 void ServiceWorker::tryToPackOrder() {
@@ -18,6 +21,7 @@ void ServiceWorker::tryToPackOrder() {
             if (order->additions != 0 && additionsPacked >= order->additions || order->additions == 0)
                 if (order->fries != 0 && friesPacked >= order->fries || order->fries == 0)
                     if (order->drinks != 0 && drinksPacked >= order->drinks || order->drinks == 0) {
+                        orderPackExtraditionTimes.push(Time);
                         if (SERVICE_DEBUG_MODE) cout << Time << ": serivce worker is packing an order" << endl;
                         burgersPacked -= order->burgers;
                         additionsPacked -= order->additions;

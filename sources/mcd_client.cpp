@@ -6,66 +6,76 @@ using namespace std;
 
 void Client::saveStats() {
     clientDissatisfaction(dissatisfaction);
+    wholeClientDissatisfaction(dissatisfaction);
     clientInMCDTime(Time - arriveTime);
+    wholeClientInMCDTime(Time - arriveTime);
 }
 
 int Client::chooseFacility() {
     Wait(orderInCashRegister ? Normal(whichCashRegister.center, whichCashRegister.scattering) : Normal(whichKiosk.center, whichKiosk.scattering));
     int idx = 0;
-    if (orderInCashRegister)
+    if (orderInCashRegister) {
+        int min = cashRegisters[0]->Busy() ? 1 : 0;
         for (int i = 1; i < cashRegisterCount; i++)
-            if (cashRegisters[i]->QueueLen() < cashRegisters[idx]->QueueLen())
+            if (cashRegisters[i]->QueueLen() + (cashRegisters[i]->Busy() ? 1 : 0) < min) {
                 idx = i;
-    else
+                min = cashRegisters[i]->QueueLen() + (cashRegisters[i]->Busy() ? 1 : 0);
+            }
+    }
+    else {
+        int min = kiosks[0]->Busy() ? 1 : 0;
         for (int i = 1; i < kioskCount; i++)
-            if (kiosks[i]->QueueLen() < kiosks[idx]->QueueLen())
+            if (kiosks[i]->QueueLen() + (kiosks[i]->Busy() ? 1 : 0) < min) {
                 idx = i;
-
+                min = kiosks[i]->QueueLen() + (kiosks[i]->Busy() ? 1 : 0);
+            }
+    }
     return idx;
 }
 
+enum OrderType {
+    SMALL,
+    MIDDLE,
+    BIG
+};
+
 void Client::makeAnOrder() {
-    bool orderBurger = Random() < orderBurgerChance ? true : false;
-    bool orderFries = Random() < orderFriesChance ? true : false;
-    bool orderAddition = Random() < orderAdditionChance ? true : false;
-    bool orderDrink = Random() < orderDrinkChance ? true : false;
-
-    if (orderBurger) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        burgers++;
+    Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
+    OrderType orderType;
+    double rand = Random();
+    if (rand < smallOrderChance) {
+        orderType = SMALL;
+        if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " has chosen to make a small order" << endl;
     }
-    if (orderFries) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        fries++;
+    else if (rand < smallOrderChance + middleOrderChance) {
+        orderType = MIDDLE;
+        if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " has chosen to make a middle order" << endl;
     }
-    if (orderAddition) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        additions++;
-    }
-    if (orderDrink) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        drinks++;
+    else {
+        orderType = BIG;
+        if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " has chosen to make a big order" << endl;
     }
 
-    while (orderBurger && Random() < orderAnotherBurgerChance) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        burgers++;
-    }
-    
-    while (orderAddition && Random() < orderAnotherAdditionChance) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        additions++;
-    }
-    
-    while (orderFries && Random() < orderAnotherFriesChance) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        fries++;
-    }
-    
-    while (orderDrink && Random() < orderAnotherDrinkChance) {
-        Wait(orderInCashRegister ? Normal(whatCashRegister.center, whatCashRegister.scattering) : Normal(whatKiosk.center, whatKiosk.scattering));
-        drinks++;
-    }
+    switch (orderType) {
+        case SMALL:
+            burgers = Uniform(smallOrderPossibleBurgerCountMin, smallOrderPossibleBurgerCountMax);
+            additions = Uniform(smallOrderPossibleFriesCountMin, smallOrderPossibleFriesCountMax);
+            fries = Uniform(smallOrderPossibleFriesCountMin, smallOrderPossibleFriesCountMax);
+            drinks = Uniform(smallOrderPossibleDrinkCountMin, smallOrderPossibleDrinkCountMax);
+            break;
+        case MIDDLE:
+            burgers = Uniform(middleOrderPossibleBurgerCountMin, middleOrderPossibleBurgerCountMax);
+            additions = Uniform(middleOrderPossibleFriesCountMin, middleOrderPossibleFriesCountMax);
+            fries = Uniform(middleOrderPossibleFriesCountMin, middleOrderPossibleFriesCountMax);
+            drinks = Uniform(middleOrderPossibleDrinkCountMin, middleOrderPossibleDrinkCountMax);
+            break;
+        case BIG:
+            burgers = Uniform(bigOrderPossibleBurgerCountMin, bigOrderPossibleBurgerCountMax);
+            additions = Uniform(bigOrderPossibleFriesCountMin, bigOrderPossibleFriesCountMax);
+            fries = Uniform(bigOrderPossibleFriesCountMin, bigOrderPossibleFriesCountMax);
+            drinks = Uniform(bigOrderPossibleDrinkCountMin, bigOrderPossibleDrinkCountMax);
+            break;
+    } 
 }
 
 void Client::Behavior() {
@@ -85,6 +95,7 @@ void Client::Behavior() {
     Seize(orderInCashRegister ? *(cashRegisters[idx]) : *(kiosks[idx]));
     dissatisfaction += int(Time - startWaitTime);
     orderInCashRegister ? cashRegisterQueueTime(Time - startWaitTime) : kioskQueueTime(Time - startWaitTime);
+    orderInCashRegister ? wholeCashRegisterQueueTime(Time - startWaitTime) : wholeKioskQueueTime(Time - startWaitTime);
     if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " was in queue for " << Time - startWaitTime << " minutes" << endl;
 
     if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " starts ordering" << endl;
@@ -126,6 +137,7 @@ void Client::Behavior() {
     if (CLIENT_DEBUG_MODE) cout << Time << ": client " << clientNumber << " has been waiting for his order for " << Time - startWaitTime << " minutes" << endl;
     dissatisfaction += int(Time - startWaitTime);
     orderWaitingTime(Time - startWaitTime);
+    wholeOrderWaitingTime(Time - startWaitTime);
 
     Wait(Normal(pickOrderTime.center, pickOrderTime.scattering));
     if (packOrder) {
@@ -157,6 +169,7 @@ void Client::Behavior() {
         chosenTable = i;
         tables[i].busy = true;
         tableSearchingTime(Time - startWaitTime);
+        wholeTtableSearchingTime(Time - startWaitTime);
         break;
     }
 

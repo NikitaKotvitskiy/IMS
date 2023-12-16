@@ -34,6 +34,7 @@ void Frier::Behavior() {
             friesPacked++;
 
             friesTime(Time - friesOrderTimes.front());
+            wholeFriesTime(Time - friesOrderTimes.front());
             friesOrderTimes.pop();
         }
     }
